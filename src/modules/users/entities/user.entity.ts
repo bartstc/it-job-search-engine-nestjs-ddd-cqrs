@@ -1,20 +1,14 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, PrimaryColumn, Unique } from 'typeorm';
 
-import { AbstractEntity } from 'shared/core/AbstractEntity';
-import { ContextEntity } from './context.entity';
+import { AbstractEntity } from 'shared/core';
+
+import { ContextType } from '../domain/types';
 
 @Entity('user')
 @Unique(['email', 'username'])
 export class UserEntity extends AbstractEntity {
   @PrimaryColumn()
-  userAccountId: string;
+  userId: string;
 
   @Column()
   email: string;
@@ -32,12 +26,8 @@ export class UserEntity extends AbstractEntity {
   isEmailVerified: boolean;
 
   @Column()
-  contextId: string;
+  contextType: ContextType;
 
-  @OneToOne(
-    () => ContextEntity,
-    (context: ContextEntity) => context.user,
-  )
-  @JoinColumn()
-  context: ContextEntity;
+  @Column('text', { array: true })
+  roleIds: string[];
 }

@@ -173,6 +173,14 @@ export class Guard {
       };
     }
 
+    if (list.length === 0) {
+      return {
+        succeeded: false,
+        message: `${argumentName} cannot be empty`,
+        signature: `${argumentName}.shouldNotBeEmpty`,
+      };
+    }
+
     for (const item in list) {
       const isStringResult = this.isString(item, 'listItem');
       if (!isStringResult.succeeded) {
