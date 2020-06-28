@@ -2,9 +2,22 @@ import { Guard, Result } from 'shared/core';
 import { Entity, UniqueEntityID } from 'shared/domain';
 
 import { UserId } from './userId';
-import { CreateUserDto } from '../dtos';
+import { UserEmail } from './userEmail';
+import { UserName } from './userName';
+import { UserPassword } from './userPassword';
+import { ContextType } from './types';
 
-export class User extends Entity<CreateUserDto> {
+export class UserProps {
+  email: UserEmail;
+  username: UserName;
+  password: UserPassword;
+  contextType: ContextType;
+  roleIds: string[];
+  isDeleted?: boolean = false;
+  isEmailVerified?: boolean = false;
+}
+
+export class User extends Entity<UserProps> {
   get userId() {
     return UserId.create(this._id).getValue();
   }
@@ -45,14 +58,11 @@ export class User extends Entity<CreateUserDto> {
     }
   }
 
-  private constructor(props: CreateUserDto, id?: UniqueEntityID) {
+  private constructor(props: UserProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
-  public static create(
-    props: CreateUserDto,
-    id?: UniqueEntityID,
-  ): Result<User> {
+  public static create(props: UserProps, id?: UniqueEntityID): Result<User> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
       { argument: props.username, argumentName: 'username' },
       { argument: props.password, argumentName: 'password' },
