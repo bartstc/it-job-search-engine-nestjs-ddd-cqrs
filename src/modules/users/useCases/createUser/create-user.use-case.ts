@@ -6,15 +6,15 @@ import { AppError, UseCase } from 'shared/core';
 
 import { User, UserEmail, UserName, UserPassword } from '../../domain';
 import { UserRepository } from '../../repositories';
-import { CreateUserErrors } from './CreateUserErrors';
-import { CreateUserDto } from './CreateUserDto';
+import { CreateUserErrors } from './create-user.errors';
+import { CreateUserDto } from './create-user.dto';
 
 type Response = Either<
   | CreateUserErrors.EmailAlreadyExistsError
   | CreateUserErrors.UsernameTakenError
   | AppError.ValidationError
   | AppError.UnexpectedError,
-  Result<void>
+  Result<User>
 >;
 
 @Injectable()
@@ -81,7 +81,7 @@ export class CreateUserUseCase
 
       await this.userRepository.persist(user);
 
-      return right(Result.ok());
+      return right(Result.ok(user));
     } catch (err) {
       return left(new AppError.UnexpectedError(err));
     }

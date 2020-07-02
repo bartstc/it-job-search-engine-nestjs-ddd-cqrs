@@ -1,9 +1,9 @@
 import { Guard, Result } from 'shared/core';
 import { Entity, UniqueEntityID } from 'shared/domain';
 
-import { UserId } from './userId';
+import { UserId } from './user-id';
 import { ContextType } from './types';
-import { RoleName } from './roleName';
+import { RoleName } from './role-name';
 
 interface RoleProps {
   name: RoleName;

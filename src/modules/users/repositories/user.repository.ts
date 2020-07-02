@@ -8,12 +8,7 @@ import { UserMap } from '../mappers';
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> implements UserRepo {
   async exists(email: string): Promise<boolean> {
-    const existingUser = await this.createQueryBuilder()
-      .where('email = :email', {
-        email,
-      })
-      .getOne();
-
+    const existingUser = await this.findOne({ email });
     return !!existingUser;
   }
 

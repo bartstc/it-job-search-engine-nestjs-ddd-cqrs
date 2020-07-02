@@ -1,10 +1,10 @@
 import { Guard, Result } from 'shared/core';
 import { Entity, UniqueEntityID } from 'shared/domain';
 
-import { UserId } from './userId';
-import { UserEmail } from './userEmail';
-import { UserName } from './userName';
-import { UserPassword } from './userPassword';
+import { UserId } from './user-id';
+import { UserEmail } from './user-email';
+import { UserName } from './user-name';
+import { UserPassword } from './user-password';
 import { ContextType } from './types';
 
 export class UserProps {

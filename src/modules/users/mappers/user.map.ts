@@ -61,6 +61,7 @@ export class UserMap implements Mapper<User> {
       password: password,
       roleIds: user.roleIds,
       isDeleted: user.isDeleted,
+      contextType: user.contextType,
     };
   }
 }

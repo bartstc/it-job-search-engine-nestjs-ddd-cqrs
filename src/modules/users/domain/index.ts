@@ -1,5 +1,5 @@
-export { UserId } from './userId';
-export { UserName } from './userName';
-export { UserEmail } from './userEmail';
-export { UserPassword } from './userPassword';
+export { UserId } from './user-id';
+export { UserName } from './user-name';
+export { UserEmail } from './user-email';
+export { UserPassword } from './user-password';
 export { User } from './user';

@@ -1,2 +1,2 @@
-export { ContextType } from './ContextType';
-export { JwtPayload } from './JwtPayload';
+export { ContextType } from './context-type';
+export { JwtPayload } from './jwt-payload';
