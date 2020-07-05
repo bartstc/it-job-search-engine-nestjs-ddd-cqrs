@@ -74,7 +74,7 @@ export class CreateUserUseCase
       });
 
       if (!userOrError.isSuccess) {
-        return left(Result.fail({ ...userOrError.error }));
+        return left(Result.fail(userOrError.error));
       }
 
       const user: User = userOrError.getValue();
