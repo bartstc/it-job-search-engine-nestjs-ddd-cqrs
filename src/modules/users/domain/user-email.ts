@@ -23,6 +23,7 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     return email.trim().toLowerCase();
   }
 
+  // todo: handle error via Either monad: EmailInvalidError
   public static create({ value }: UserEmailProps): Result<UserEmail> {
     if (!this.isValidEmail(value)) {
       return Result.fail({
