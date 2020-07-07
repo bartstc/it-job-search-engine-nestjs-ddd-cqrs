@@ -24,7 +24,7 @@ export class UsersController {
     return this.commandBus.execute(new LoginUserCommand(loginUserDto, res));
   }
 
-  @Delete('userId')
+  @Delete("/:userId")
   async deleteUser(@Param('userId') userId: string, @Res() res: Response) {
     return this.commandBus.execute(new DeleteUserCommand({ userId }, res));
   }

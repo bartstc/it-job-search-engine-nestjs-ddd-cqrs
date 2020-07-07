@@ -10,6 +10,7 @@ import { UsersCommandHandlers } from './commands/handlers';
 
 import { CreateUserUseCase } from './useCases/createUser';
 import { LoginUserUseCase } from './useCases/loginUser';
+import { DeleteUserUseCase } from './useCases/deleteUser';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
@@ -32,6 +33,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtStrategy,
     CreateUserUseCase,
     LoginUserUseCase,
+    DeleteUserUseCase,
   ],
   exports: [JwtStrategy, PassportModule],
 })
