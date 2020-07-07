@@ -6,8 +6,9 @@ import { UserDto } from '../dtos';
 import { UserEntity } from '../entities';
 
 export class UserMap implements Mapper<User> {
-  public static toDto(user: User): UserDto {
+  static toDto(user: User): UserDto {
     return {
+      userId: user.userId.id.toString(),
       username: user.username.value,
       contextType: user.contextType,
       isEmailVerified: user.isEmailVerified,
@@ -17,7 +18,7 @@ export class UserMap implements Mapper<User> {
     };
   }
 
-  public static toDomain(entity: UserEntity): User {
+  static toDomain(entity: UserEntity): User {
     const userNameOrError = UserName.create({ value: entity.username });
     const userEmailOrError = UserEmail.create({ value: entity.email });
     const userPasswordOrError = UserPassword.create({
@@ -43,7 +44,7 @@ export class UserMap implements Mapper<User> {
     return userOrError.getValue();
   }
 
-  public static async toPersistence(user: User): Promise<Partial<UserEntity>> {
+  static async toPersistence(user: User): Promise<Partial<UserEntity>> {
     let password;
     if (!!user.password) {
       if (user.password.isAlreadyHashed()) {
