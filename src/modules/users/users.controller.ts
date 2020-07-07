@@ -1,8 +1,12 @@
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Res } from '@nestjs/common';
 
-import { CreateUserCommand, LoginUserCommand } from './commands/impl';
+import {
+  CreateUserCommand,
+  DeleteUserCommand,
+  LoginUserCommand,
+} from './commands/impl';
 import { CreateUserDto } from './useCases/createUser';
 import { LoginUserDto } from './useCases/loginUser';
 
@@ -18,5 +22,10 @@ export class UsersController {
   @Post('/signin')
   async loginUser(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
     return this.commandBus.execute(new LoginUserCommand(loginUserDto, res));
+  }
+
+  @Delete('userId')
+  async deleteUser(@Param('userId') userId: string, @Res() res: Response) {
+    return this.commandBus.execute(new DeleteUserCommand({ userId }, res));
   }
 }
