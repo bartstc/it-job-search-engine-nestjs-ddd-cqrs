@@ -5,7 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
 import { UsersController } from './users.controller';
-import { UserRepository } from './repositories';
+import { RoleRepository, UserRepository } from './repositories';
 import { UsersCommandHandlers } from './commands/handlers';
 
 import { CreateUserUseCase } from './useCases/createUser';
@@ -16,7 +16,7 @@ import { JwtStrategy } from './jwt.strategy';
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([UserRepository, RoleRepository]),
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
