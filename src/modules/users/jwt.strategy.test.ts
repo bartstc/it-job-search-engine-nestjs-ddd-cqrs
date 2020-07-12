@@ -7,13 +7,7 @@ import { UserRepository } from './repositories';
 import { UserEntity } from './entities';
 import { JwtPayload } from './domain/types';
 
-const mockUserRepository = () => ({
-  exists: jest.fn(),
-  getUserByUserId: jest.fn(),
-  getUserByUsername: jest.fn(),
-  persist: jest.fn(),
-  findOne: jest.fn(),
-});
+import { mockUserRepository } from './fixtures/userRepository';
 
 describe('JwtStrategy', () => {
   let jwtStrategy: JwtStrategy;

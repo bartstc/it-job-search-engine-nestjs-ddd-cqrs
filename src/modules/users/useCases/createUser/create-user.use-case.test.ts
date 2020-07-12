@@ -1,17 +1,11 @@
 import { Test } from '@nestjs/testing';
 
-import { UserRepo } from '../../types';
 import { ContextType } from '../../domain/types';
 import { UserRepository } from '../../repositories';
 import { CreateUserDto } from './create-user.dto';
 import { CreateUserUseCase } from './create-user.use-case';
 
-const mockUserRepository = (): UserRepo => ({
-  exists: jest.fn(),
-  getUserByUserId: jest.fn(),
-  getUserByUsername: jest.fn(),
-  persist: jest.fn(),
-});
+import { mockUserRepository } from '../../fixtures/userRepository';
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase: CreateUserUseCase;

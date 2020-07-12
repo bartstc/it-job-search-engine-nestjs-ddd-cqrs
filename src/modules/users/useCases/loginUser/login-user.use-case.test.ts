@@ -1,19 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 
-import { UserRepo } from '../../types';
 import { UserRepository } from '../../repositories';
 import { LoginUserUseCase } from './login-user.use-case';
 import { LoginUserDto } from './login-user.dto';
+
 import { mockJwtService } from '../../fixtures/jwtService';
 import { defaultUser } from '../../fixtures/user';
-
-const mockUserRepository = (): UserRepo => ({
-  exists: jest.fn(),
-  getUserByUserId: jest.fn(),
-  getUserByUsername: jest.fn(),
-  persist: jest.fn(),
-});
+import { mockUserRepository } from '../../fixtures/userRepository';
 
 describe('LoginUserUseCase', () => {
   let loginUserUseCase: LoginUserUseCase;

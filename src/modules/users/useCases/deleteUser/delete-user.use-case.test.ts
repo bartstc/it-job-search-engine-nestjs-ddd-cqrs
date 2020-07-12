@@ -1,15 +1,9 @@
 import { Test } from '@nestjs/testing';
 
-import { UserRepo } from '../../types';
 import { UserRepository } from '../../repositories';
 import { DeleteUserUseCase } from './delete-user.use-case';
 
-const mockUserRepository = (): UserRepo => ({
-  exists: jest.fn(),
-  getUserByUserId: jest.fn(),
-  getUserByUsername: jest.fn(),
-  persist: jest.fn(),
-});
+import { mockUserRepository } from '../../fixtures/userRepository';
 
 describe('DeleteUserUseCase', () => {
   let deleteUserUseCase: DeleteUserUseCase;
