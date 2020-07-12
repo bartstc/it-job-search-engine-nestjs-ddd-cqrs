@@ -1,3 +1,3 @@
-export { DeleteUserDto } from './DeleteUserDto';
-export { DeleteUserErrors } from './DeleteUserErrors';
-export { DeleteUserUseCase } from './DeleteUserUseCase';
+export { DeleteUserDto } from './delete-user.dto';
+export { DeleteUserErrors } from './delete-user.errors';
+export { DeleteUserUseCase } from './delete-user.use-case';

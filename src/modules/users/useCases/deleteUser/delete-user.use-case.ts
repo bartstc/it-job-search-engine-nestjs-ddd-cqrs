@@ -4,8 +4,8 @@ import { AppError, Either, left, Result, right, UseCase } from 'shared/core';
 
 import { UserRepository } from '../../repositories';
 import { User } from '../../domain';
-import { DeleteUserErrors } from './DeleteUserErrors';
-import { DeleteUserDto } from './DeleteUserDto';
+import { DeleteUserErrors } from './delete-user.errors';
+import { DeleteUserDto } from './delete-user.dto';
 
 type Response = Either<
   AppError.UnexpectedError | DeleteUserErrors.UserNotFoundError,
@@ -33,7 +33,7 @@ export class DeleteUserUseCase
 
       await this.userRepository.persist(user);
 
-      return right(Result.ok<void>());
+      return right(Result.ok());
     } catch (err) {
       return left(new AppError.UnexpectedError(err));
     }

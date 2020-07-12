@@ -53,7 +53,6 @@ describe('CreateUserUseCase', () => {
     expect(result.value.error.signature).toBe('emailAlreadyTaken');
   });
 
-  // should returns getUserByUsername when username is taken
   it('should returns UsernameTakenError when username is taken', async function() {
     userRepository.exists.mockResolvedValue(false);
     userRepository.getUserByUsername.mockResolvedValue({ username: 'bob' });

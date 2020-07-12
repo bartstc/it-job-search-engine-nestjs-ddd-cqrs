@@ -6,8 +6,8 @@ import { AppError, Either, left, Result, right, UseCase } from 'shared/core';
 import { JwtPayload } from '../../domain/types';
 import { User, UserName, UserPassword } from '../../domain';
 import { UserRepository } from '../../repositories';
-import { LoginUserErrors } from './LoginUserErrors';
-import { LoginUserDtoResponse, LoginUserDto } from './LoginUserDto';
+import { LoginUserErrors } from './login-user.errors';
+import { LoginUserDtoResponse, LoginUserDto } from './login-user.dto';
 
 type Response = Either<
   | LoginUserErrors.PasswordDoesntMatchError
