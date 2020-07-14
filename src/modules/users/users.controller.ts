@@ -5,6 +5,7 @@ import { Body, Controller, Delete, Param, Post, Res } from '@nestjs/common';
 import {
   CreateRoleCommand,
   CreateUserCommand,
+  DeleteRoleCommand,
   DeleteUserCommand,
   LoginUserCommand,
 } from './commands/impl';
@@ -34,5 +35,10 @@ export class UsersController {
   @Post('/role')
   async createRole(@Body() createRoleDto: CreateRoleDto, @Res() res: Response) {
     return this.commandBus.execute(new CreateRoleCommand(createRoleDto, res));
+  }
+
+  @Delete('/role/:roleId')
+  async deleteRole(@Param('roleId') roleId: string, @Res() res: Response) {
+    return this.commandBus.execute(new DeleteRoleCommand({ roleId }, res));
   }
 }

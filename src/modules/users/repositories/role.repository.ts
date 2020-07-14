@@ -13,6 +13,13 @@ export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
     return !!existingRole;
   }
 
+  async getRoleByRoleId(roleId: string) {
+    const role = await this.findOne({ roleId });
+    if (!role) throw new Error('Role not found');
+
+    return RoleMap.toDomain(role);
+  }
+
   async getPermissions(roleIds: string[]) {
     const roles = await this.createQueryBuilder('role')
       .where('role.roleId IN (:...ids)', { ids: roleIds })
@@ -33,5 +40,16 @@ export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
     const roleEntity = await RoleMap.toPersistence(role);
 
     await this.create(roleEntity).save();
+  }
+
+  async deleteRole(role: Role) {
+    const roleId = role.roleId.id.toString();
+    const deleteResult = await this.delete({
+      roleId,
+    });
+
+    if (deleteResult.affected === 0) {
+      throw new Error(`Role with id ${roleId} not found`);
+    }
   }
 }

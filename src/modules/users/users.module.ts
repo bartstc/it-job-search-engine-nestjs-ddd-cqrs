@@ -12,7 +12,9 @@ import { JwtStrategy } from './jwt.strategy';
 import { CreateUserUseCase } from './useCases/createUser';
 import { LoginUserUseCase } from './useCases/loginUser';
 import { DeleteUserUseCase } from './useCases/deleteUser';
+
 import { CreateRoleUseCase } from './useCases/createRole';
+import { DeleteRoleUseCase } from './useCases/deleteRole';
 
 @Module({
   imports: [
@@ -36,6 +38,7 @@ import { CreateRoleUseCase } from './useCases/createRole';
     LoginUserUseCase,
     DeleteUserUseCase,
     CreateRoleUseCase,
+    DeleteRoleUseCase,
   ],
   exports: [JwtStrategy, PassportModule],
 })
