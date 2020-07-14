@@ -5,9 +5,9 @@ import { UserRepository } from '../../repositories';
 import { LoginUserUseCase } from './login-user.use-case';
 import { LoginUserDto } from './login-user.dto';
 
-import { mockJwtService } from '../../fixtures/jwtService';
+import { mockJwtService } from '../../fixtures/mock-jwt-service';
 import { defaultUser } from '../../fixtures/user';
-import { mockUserRepository } from '../../fixtures/userRepository';
+import { mockUserRepository } from '../../fixtures/mock-user-repository';
 
 describe('LoginUserUseCase', () => {
   let loginUserUseCase: LoginUserUseCase;

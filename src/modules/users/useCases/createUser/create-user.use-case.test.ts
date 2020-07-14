@@ -5,7 +5,7 @@ import { UserRepository } from '../../repositories';
 import { CreateUserDto } from './create-user.dto';
 import { CreateUserUseCase } from './create-user.use-case';
 
-import { mockUserRepository } from '../../fixtures/userRepository';
+import { mockUserRepository } from '../../fixtures/mock-user-repository';
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase: CreateUserUseCase;

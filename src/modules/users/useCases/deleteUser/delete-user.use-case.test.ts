@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { UserRepository } from '../../repositories';
 import { DeleteUserUseCase } from './delete-user.use-case';
 
-import { mockUserRepository } from '../../fixtures/userRepository';
+import { mockUserRepository } from '../../fixtures/mock-user-repository';
 
 describe('DeleteUserUseCase', () => {
   let deleteUserUseCase: DeleteUserUseCase;

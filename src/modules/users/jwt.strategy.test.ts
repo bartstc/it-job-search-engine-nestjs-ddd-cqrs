@@ -7,7 +7,7 @@ import { UserRepository } from './repositories';
 import { UserEntity } from './entities';
 import { JwtPayload } from './domain/types';
 
-import { mockUserRepository } from './fixtures/userRepository';
+import { mockUserRepository } from './fixtures/mock-user-repository';
 
 describe('JwtStrategy', () => {
   let jwtStrategy: JwtStrategy;

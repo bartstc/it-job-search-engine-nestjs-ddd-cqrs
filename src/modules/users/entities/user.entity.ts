@@ -4,7 +4,7 @@ import { AbstractEntity } from 'shared/core';
 
 import { ContextType } from '../domain/types';
 
-@Entity('user')
+@Entity('users')
 @Unique(['email', 'username'])
 export class UserEntity extends AbstractEntity {
   @PrimaryColumn()

@@ -1,11 +1,10 @@
-import { Column, Entity, PrimaryColumn, Unique } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 import { AbstractEntity } from 'shared/core';
 
 import { ContextType } from '../domain/types';
 
-@Entity('role')
-@Unique(['name'])
+@Entity('roles')
 export class RoleEntity extends AbstractEntity {
   @PrimaryColumn()
   roleId: string;

@@ -8,10 +8,11 @@ import { UsersController } from './users.controller';
 import { RoleRepository, UserRepository } from './repositories';
 import { UsersCommandHandlers } from './commands/handlers';
 
+import { JwtStrategy } from './jwt.strategy';
 import { CreateUserUseCase } from './useCases/createUser';
 import { LoginUserUseCase } from './useCases/loginUser';
 import { DeleteUserUseCase } from './useCases/deleteUser';
-import { JwtStrategy } from './jwt.strategy';
+import { CreateRoleUseCase } from './useCases/createRole';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { JwtStrategy } from './jwt.strategy';
     CreateUserUseCase,
     LoginUserUseCase,
     DeleteUserUseCase,
+    CreateRoleUseCase,
   ],
   exports: [JwtStrategy, PassportModule],
 })
