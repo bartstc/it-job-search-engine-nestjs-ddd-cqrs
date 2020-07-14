@@ -4,6 +4,7 @@ import { Entity, UniqueEntityID } from 'shared/domain';
 import { UserId } from './user-id';
 import { ContextType } from './types';
 import { RoleName } from './role-name';
+import { User } from './user';
 
 interface RoleProps {
   name: RoleName;
@@ -41,6 +42,13 @@ export class Role extends Entity<RoleProps> {
 
     if (!guardResult.succeeded) {
       return Result.fail(guardResult);
+    }
+
+    if (!User.contextTypeIsValid(props.contextType)) {
+      return Result.fail({
+        message: 'Invalid context type',
+        signature: 'contextType.invalid',
+      });
     }
 
     const isArrayGuardResult = Guard.isListOfStrings(

@@ -3,7 +3,7 @@ import { Mapper } from 'shared/core';
 
 import { RoleEntity } from '../entities';
 import { Role } from '../domain/role';
-import { RoleDto } from '../dtos/role.dto';
+import { RoleDto } from '../dtos';
 import { RoleName } from '../domain/role-name';
 
 export class RoleMap implements Mapper<Role> {
@@ -14,6 +14,15 @@ export class RoleMap implements Mapper<Role> {
       contextType: role.contextType,
       permissions: role.permissions,
     };
+  }
+
+  static toDtoBulk(roles: Role[]): RoleDto[] {
+    return roles.map(role => ({
+      roleId: role.roleId.id.toString(),
+      name: role.name.value,
+      contextType: role.contextType,
+      permissions: role.permissions,
+    }));
   }
 
   static toDomain(entity: RoleEntity): Role {

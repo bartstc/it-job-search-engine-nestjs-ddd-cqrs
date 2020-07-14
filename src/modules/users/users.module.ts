@@ -6,7 +6,8 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { UsersController } from './users.controller';
 import { RoleRepository, UserRepository } from './repositories';
-import { UsersCommandHandlers } from './commands/handlers';
+import { CommandHandlers } from './commands/handlers';
+import { QueryHandlers } from './queries/handlers';
 
 import { JwtStrategy } from './jwt.strategy';
 import { CreateUserUseCase } from './useCases/createUser';
@@ -15,6 +16,7 @@ import { DeleteUserUseCase } from './useCases/deleteUser';
 
 import { CreateRoleUseCase } from './useCases/createRole';
 import { DeleteRoleUseCase } from './useCases/deleteRole';
+import { GetRolesUseCase } from './useCases/getRoles';
 
 @Module({
   imports: [
@@ -32,13 +34,15 @@ import { DeleteRoleUseCase } from './useCases/deleteRole';
   ],
   controllers: [UsersController],
   providers: [
-    ...UsersCommandHandlers,
+    ...CommandHandlers,
+    ...QueryHandlers,
     JwtStrategy,
     CreateUserUseCase,
     LoginUserUseCase,
     DeleteUserUseCase,
     CreateRoleUseCase,
     DeleteRoleUseCase,
+    GetRolesUseCase,
   ],
   exports: [JwtStrategy, PassportModule],
 })

@@ -62,6 +62,10 @@ export class User extends Entity<UserProps> {
     super(props, id);
   }
 
+  public static contextTypeIsValid(value: any) {
+    return Object.values(ContextType).some(type => type === value);
+  }
+
   public static create(props: UserProps, id?: UniqueEntityID): Result<User> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
       { argument: props.username, argumentName: 'username' },
@@ -73,6 +77,13 @@ export class User extends Entity<UserProps> {
 
     if (!guardResult.succeeded) {
       return Result.fail(guardResult);
+    }
+
+    if (!this.contextTypeIsValid(props.contextType)) {
+      return Result.fail({
+        message: 'Invalid context type',
+        signature: 'contextType.invalid',
+      });
     }
 
     const isArrayGuardResult = Guard.isListOfStrings(props.roleIds, 'roleIds');

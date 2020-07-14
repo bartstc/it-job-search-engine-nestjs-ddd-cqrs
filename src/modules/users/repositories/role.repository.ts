@@ -5,6 +5,7 @@ import { RoleEntity } from '../entities';
 import { Role } from '../domain/role';
 import { RoleRepo } from '../types';
 import { RoleMap } from '../mappers';
+import { ContextType } from '../domain/types';
 
 @EntityRepository(RoleEntity)
 export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
@@ -31,6 +32,12 @@ export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
       .flatten()
       .uniq()
       .value();
+  }
+
+  async getRolesByContextType(contextType: ContextType) {
+    const roles = await this.find({ where: { contextType } });
+
+    return roles.map(role => RoleMap.toDomain(role));
   }
 
   async persist(role: Role) {

@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { AppError, BaseController } from 'shared/core';
 
 import { CreateRoleDto, CreateRoleUseCase } from '../../useCases/createRole';
-import { CreateRoleCommand } from '../impl/create-role.command';
+import { CreateRoleCommand } from '../impl';
 
 @CommandHandler(CreateRoleCommand)
 export class CreateRoleHandler extends BaseController
