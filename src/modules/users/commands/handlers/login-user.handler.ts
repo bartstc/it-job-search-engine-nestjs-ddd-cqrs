@@ -1,15 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
-import { Response } from 'express';
 
 import { AppError, BaseController } from 'shared/core';
 
 import { LoginUserCommand } from '../impl';
-import {
-  LoginUserDto,
-  LoginUserErrors,
-  LoginUserUseCase,
-} from '../../useCases/loginUser';
+import { LoginUserErrors, LoginUserUseCase } from '../../useCases/loginUser';
 
 @CommandHandler(LoginUserCommand)
 export class LoginUserHandler extends BaseController
@@ -18,12 +13,7 @@ export class LoginUserHandler extends BaseController
     super();
   }
 
-  async execute(command: LoginUserCommand) {
-    const { loginUserDto, res } = command;
-    this.loginUser(loginUserDto, res);
-  }
-
-  async loginUser(loginUserDto: LoginUserDto, res: Response) {
+  async execute({ res, loginUserDto }: LoginUserCommand) {
     try {
       const result = await this.loginUserUseCase.execute(loginUserDto);
 

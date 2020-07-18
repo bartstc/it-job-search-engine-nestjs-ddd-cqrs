@@ -1,10 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
-import { Response } from 'express';
 
 import { AppError, BaseController } from 'shared/core';
 
-import { CreateRoleDto, CreateRoleUseCase } from '../../useCases/createRole';
+import { CreateRoleUseCase } from '../../useCases/createRole';
 import { CreateRoleCommand } from '../impl';
 
 @CommandHandler(CreateRoleCommand)
@@ -14,12 +13,7 @@ export class CreateRoleHandler extends BaseController
     super();
   }
 
-  async execute(command: CreateRoleCommand) {
-    const { createRoleDto, res } = command;
-    this.createRole(createRoleDto, res);
-  }
-
-  async createRole(createRoleDto: CreateRoleDto, res: Response) {
+  async execute({ res, createRoleDto }: CreateRoleCommand) {
     try {
       const result = await this.createRoleUseCase.execute(createRoleDto);
 

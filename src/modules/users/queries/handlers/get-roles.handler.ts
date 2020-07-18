@@ -4,8 +4,7 @@ import { Logger } from '@nestjs/common';
 import { BaseController, AppError } from 'shared/core';
 
 import { GetRolesQuery } from '../impl';
-import { GetRolesUseCase } from '../../useCases/getRoles';
-import { GetRolesErrors } from '../../useCases/getRoles';
+import { GetRolesUseCase, GetRolesErrors } from '../../useCases/getRoles';
 
 @QueryHandler(GetRolesQuery)
 export class GetRolesHandler extends BaseController

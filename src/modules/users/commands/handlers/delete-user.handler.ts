@@ -1,15 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
-import { Response } from 'express';
 
 import { AppError, BaseController } from 'shared/core';
 
 import { DeleteUserCommand } from '../impl';
-import {
-  DeleteUserDto,
-  DeleteUserErrors,
-  DeleteUserUseCase,
-} from '../../useCases/deleteUser';
+import { DeleteUserErrors, DeleteUserUseCase } from '../../useCases/deleteUser';
 
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserHandler extends BaseController
@@ -18,12 +13,7 @@ export class DeleteUserHandler extends BaseController
     super();
   }
 
-  async execute(command: DeleteUserCommand) {
-    const { deleteUserDto, res } = command;
-    this.deleteUser(deleteUserDto, res);
-  }
-
-  async deleteUser(deleteUserDto: DeleteUserDto, res: Response) {
+  async execute({ res, deleteUserDto }: DeleteUserCommand) {
     try {
       const result = await this.deleteUserUseCase.execute(deleteUserDto);
 

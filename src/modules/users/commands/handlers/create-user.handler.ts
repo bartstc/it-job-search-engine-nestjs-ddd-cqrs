@@ -1,15 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
-import { Response } from 'express';
 
 import { AppError, BaseController } from 'shared/core';
 
 import { CreateUserCommand } from '../impl';
-import {
-  CreateUserDto,
-  CreateUserErrors,
-  CreateUserUseCase,
-} from '../../useCases/createUser';
+import { CreateUserErrors, CreateUserUseCase } from '../../useCases/createUser';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler extends BaseController
@@ -18,12 +13,7 @@ export class CreateUserHandler extends BaseController
     super();
   }
 
-  async execute(command: CreateUserCommand) {
-    const { createUserDto, res } = command;
-    this.createUser(createUserDto, res);
-  }
-
-  async createUser(createUserDto: CreateUserDto, res: Response) {
+  async execute({ res, createUserDto }: CreateUserCommand) {
     try {
       const result = await this.createUserUseCase.execute(createUserDto);
 
