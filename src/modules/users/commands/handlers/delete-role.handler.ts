@@ -13,14 +13,15 @@ export class DeleteRoleHandler extends BaseController
     super();
   }
 
+  logger = new Logger('DeleteRoleCommand');
+
   async execute({ res, deleteRoleDto }: DeleteRoleCommand) {
     try {
       const result = await this.deleteRoleUseCase.execute(deleteRoleDto);
 
       if (result.isLeft()) {
         const error = result.value;
-
-        Logger.error(error.errorValue());
+        this.logger.error(error.errorValue());
 
         switch (error.constructor) {
           case AppError.ValidationError:
@@ -32,10 +33,10 @@ export class DeleteRoleHandler extends BaseController
         }
       }
 
-      Logger.verbose('Role successfully deleted');
+      this.logger.verbose('Role successfully deleted');
       return this.ok(res);
     } catch (err) {
-      Logger.error(err);
+      this.logger.error(err);
       return this.fail(res, err);
     }
   }

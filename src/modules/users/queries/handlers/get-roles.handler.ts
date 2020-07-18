@@ -13,28 +13,29 @@ export class GetRolesHandler extends BaseController
     super();
   }
 
+  logger = new Logger('GetRolesQuery');
+
   async execute({ getRolesDto, res }: GetRolesQuery) {
     try {
       const result = await this.getRolesUseCase.execute(getRolesDto);
 
       if (result.isLeft()) {
         const error = result.value;
-        Logger.error(error.errorValue());
+        this.logger.error(error.errorValue());
 
         switch (error.constructor) {
           case GetRolesErrors.InvalidContextTypeError:
           case AppError.ValidationError:
             return this.clientError(res, error.errorValue());
-
           default:
             return this.fail(res, error.errorValue());
         }
       }
 
-      Logger.verbose('Roles successfully returned');
+      this.logger.verbose('Roles successfully returned');
       return this.ok(res, result.value.getValue());
     } catch (err) {
-      Logger.error(err);
+      this.logger.error(err);
       return this.fail(res, err);
     }
   }

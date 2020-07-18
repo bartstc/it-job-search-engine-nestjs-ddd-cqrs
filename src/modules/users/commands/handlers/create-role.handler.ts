@@ -13,14 +13,15 @@ export class CreateRoleHandler extends BaseController
     super();
   }
 
+  logger = new Logger('CreateRoleCommand');
+
   async execute({ res, createRoleDto }: CreateRoleCommand) {
     try {
       const result = await this.createRoleUseCase.execute(createRoleDto);
 
       if (result.isLeft()) {
         const error = result.value;
-
-        Logger.error(error.errorValue());
+        this.logger.error(error.errorValue());
 
         switch (error.constructor) {
           case AppError.ValidationError:
@@ -30,10 +31,10 @@ export class CreateRoleHandler extends BaseController
         }
       }
 
-      Logger.verbose('Role successfully created');
+      this.logger.verbose('Role successfully created');
       return this.ok(res);
     } catch (err) {
-      Logger.error(err);
+      this.logger.error(err);
       return this.fail(res, err);
     }
   }

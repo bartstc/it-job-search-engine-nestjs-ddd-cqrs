@@ -13,6 +13,8 @@ export class LoginUserHandler extends BaseController
     super();
   }
 
+  logger = new Logger('LoginUserCommand');
+
   async execute({ res, loginUserDto }: LoginUserCommand) {
     try {
       const result = await this.loginUserUseCase.execute(loginUserDto);
@@ -20,7 +22,7 @@ export class LoginUserHandler extends BaseController
       if (result.isLeft()) {
         const error = result.value;
 
-        Logger.error(error.errorValue());
+        this.logger.error(error.errorValue());
 
         switch (error.constructor) {
           case LoginUserErrors.UserNameDoesntExistError:
@@ -29,16 +31,15 @@ export class LoginUserHandler extends BaseController
           case AppError.ValidationError:
             return this.clientError(res, error.errorValue());
           default:
-            Logger.error(error.errorValue());
             return this.fail(res, error.errorValue());
         }
       }
 
-      Logger.verbose('User successfully login');
+      this.logger.verbose('User successfully login');
       const dto = result.value.getValue();
       return this.ok(res, dto);
     } catch (err) {
-      Logger.error(err);
+      this.logger.error(err);
       return this.fail(res, err);
     }
   }

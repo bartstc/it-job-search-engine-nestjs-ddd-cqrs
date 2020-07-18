@@ -13,14 +13,15 @@ export class CreateUserHandler extends BaseController
     super();
   }
 
+  logger = new Logger('CreateUserCommand');
+
   async execute({ res, createUserDto }: CreateUserCommand) {
     try {
       const result = await this.createUserUseCase.execute(createUserDto);
 
       if (result.isLeft()) {
         const error = result.value;
-
-        Logger.error(error.errorValue());
+        this.logger.error(error.errorValue());
 
         switch (error.constructor) {
           case AppError.ValidationError:
@@ -33,10 +34,10 @@ export class CreateUserHandler extends BaseController
         }
       }
 
-      Logger.verbose('User successfully created');
+      this.logger.verbose('User successfully created');
       return this.ok(res);
     } catch (err) {
-      Logger.error(err);
+      this.logger.error(err);
       return this.fail(res, err);
     }
   }
