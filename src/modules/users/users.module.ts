@@ -10,13 +10,15 @@ import { CommandHandlers } from './commands/handlers';
 import { QueryHandlers } from './queries/handlers';
 
 import { JwtStrategy } from './jwt.strategy';
+import { RolesService } from './services';
+
 import { CreateUserUseCase } from './useCases/createUser';
 import { LoginUserUseCase } from './useCases/loginUser';
 import { DeleteUserUseCase } from './useCases/deleteUser';
 
-import { CreateRoleUseCase } from './useCases/createRole';
-import { DeleteRoleUseCase } from './useCases/deleteRole';
-import { GetRolesUseCase } from './useCases/getRoles';
+import { CreateRoleController, CreateRoleUseCase } from './useCases/createRole';
+import { DeleteRoleController, DeleteRoleUseCase } from './useCases/deleteRole';
+import { GetRolesController, GetRolesUseCase } from './useCases/getRoles';
 
 @Module({
   imports: [
@@ -32,11 +34,17 @@ import { GetRolesUseCase } from './useCases/getRoles';
       },
     }),
   ],
-  controllers: [UsersController],
+  controllers: [
+    UsersController,
+    CreateRoleController,
+    DeleteRoleController,
+    GetRolesController,
+  ],
   providers: [
     ...CommandHandlers,
     ...QueryHandlers,
     JwtStrategy,
+    RolesService,
     CreateUserUseCase,
     LoginUserUseCase,
     DeleteUserUseCase,

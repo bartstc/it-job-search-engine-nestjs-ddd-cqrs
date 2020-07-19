@@ -7,22 +7,22 @@ import { AppError, UseCase } from 'shared/core';
 import { RoleRepository } from '../../repositories';
 import { RoleName } from '../../domain/role-name';
 import { CreateRoleDto } from './create-role.dto';
-import { Role } from '../../domain/role';
+import { Role } from '../../domain';
 
-type Response = Either<
+export type CreateRoleResponse = Either<
   AppError.ValidationError | AppError.UnexpectedError,
   Result<Role>
 >;
 
 @Injectable()
 export class CreateRoleUseCase
-  implements UseCase<CreateRoleDto, Promise<Response>> {
+  implements UseCase<CreateRoleDto, Promise<CreateRoleResponse>> {
   constructor(
     @InjectRepository(RoleRepository)
     private roleRepository: RoleRepository,
   ) {}
 
-  async execute(request: CreateRoleDto): Promise<Response> {
+  async execute(request: CreateRoleDto): Promise<CreateRoleResponse> {
     const roleNameOrError = RoleName.create({ value: request.name });
 
     if (!roleNameOrError.isSuccess) {

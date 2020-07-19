@@ -2,7 +2,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import { chain } from 'lodash';
 
 import { RoleEntity } from '../entities';
-import { Role } from '../domain/role';
+import { Role } from '../domain';
 import { RoleRepo } from '../types';
 import { RoleMap } from '../mappers';
 import { ContextType } from '../domain/types';

@@ -10,20 +10,20 @@ import { RoleDto } from '../../dtos';
 import { User, Role } from '../../domain';
 import { RoleMap } from '../../mappers';
 
-type Response = Either<
+export type GetRolesResponse = Either<
   GetRolesErrors.InvalidContextTypeError | AppError.UnexpectedError,
   Result<RoleDto[]>
 >;
 
 @Injectable()
 export class GetRolesUseCase
-  implements UseCase<GetRolesDto, Promise<Response>> {
+  implements UseCase<GetRolesDto, Promise<GetRolesResponse>> {
   constructor(
     @InjectRepository(RoleRepository)
     private roleRepository: RoleRepository,
   ) {}
 
-  async execute({ contextType }: GetRolesDto): Promise<Response> {
+  async execute({ contextType }: GetRolesDto): Promise<GetRolesResponse> {
     let roles: Role[];
 
     if (!User.contextTypeIsValid(contextType)) {
