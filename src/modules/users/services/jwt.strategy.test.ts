@@ -3,11 +3,11 @@ import { Test } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
 import { v4 } from 'uuid';
 
-import { UserRepository } from './repositories';
-import { UserEntity } from './entities';
-import { JwtPayload } from './domain/types';
+import { UserRepository } from '../repositories';
+import { UserEntity } from '../entities';
+import { JwtPayload } from '../domain/types';
 
-import { mockUserRepository } from './fixtures/mock-user-repository';
+import { mockUserRepository } from '../fixtures/mock-user-repository';
 
 describe('JwtStrategy', () => {
   let jwtStrategy: JwtStrategy;

@@ -9,7 +9,7 @@ import { UserRepository } from '../../repositories';
 import { CreateUserErrors } from './create-user.errors';
 import { CreateUserDto } from './create-user.dto';
 
-type Response = Either<
+export type CreateUserResponse = Either<
   | CreateUserErrors.EmailAlreadyExistsError
   | CreateUserErrors.UsernameTakenError
   | AppError.ValidationError
@@ -19,13 +19,13 @@ type Response = Either<
 
 @Injectable()
 export class CreateUserUseCase
-  implements UseCase<CreateUserDto, Promise<Response>> {
+  implements UseCase<CreateUserDto, Promise<CreateUserResponse>> {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
 
-  async execute(request: CreateUserDto): Promise<Response> {
+  async execute(request: CreateUserDto): Promise<CreateUserResponse> {
     const emailOrError = UserEmail.create({ value: request.email });
     const passwordOrError = UserPassword.create({ value: request.password });
     const usernameOrError = UserName.create({ value: request.username });
@@ -57,9 +57,7 @@ export class CreateUserUseCase
         );
 
         if (usernameTaken) {
-          return left(
-            new CreateUserErrors.UsernameTakenError(username.value),
-          ) as Response;
+          return left(new CreateUserErrors.UsernameTakenError(username.value));
         }
       } catch (err) {}
 

@@ -9,7 +9,7 @@ import { UserRepository } from '../../repositories';
 import { LoginUserErrors } from './login-user.errors';
 import { LoginUserDtoResponse, LoginUserDto } from './login-user.dto';
 
-type Response = Either<
+export type LoginUserResponse = Either<
   | LoginUserErrors.PasswordDoesntMatchError
   | LoginUserErrors.UserNameDoesntExistError
   | AppError.ValidationError
@@ -18,14 +18,14 @@ type Response = Either<
 >;
 
 export class LoginUserUseCase
-  implements UseCase<LoginUserDto, Promise<Response>> {
+  implements UseCase<LoginUserDto, Promise<LoginUserResponse>> {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
     private jwtService: JwtService,
   ) {}
 
-  async execute(request: LoginUserDto): Promise<Response> {
+  async execute(request: LoginUserDto): Promise<LoginUserResponse> {
     let user: User;
     let username: UserName;
     let password: UserPassword;
