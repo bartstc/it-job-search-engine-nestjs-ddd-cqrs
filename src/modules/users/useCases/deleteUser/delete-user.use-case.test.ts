@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 
 import { UserRepository } from '../../repositories';
 import { DeleteUserUseCase } from './delete-user.use-case';
+import { DeleteUserErrors } from './delete-user.errors';
 
 import { mockUserRepository } from '../../fixtures/mock-user-repository';
 
@@ -27,6 +28,6 @@ describe('DeleteUserUseCase', () => {
     });
 
     const result = await deleteUserUseCase.execute({ userId: '123' });
-    expect(result.value.error.signature).toBe('userNotFound');
+    expect(result.value.constructor).toBe(DeleteUserErrors.UserNotFoundError);
   });
 });

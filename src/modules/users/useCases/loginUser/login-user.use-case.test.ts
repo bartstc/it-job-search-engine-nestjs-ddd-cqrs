@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from '../../repositories';
 import { LoginUserUseCase } from './login-user.use-case';
 import { LoginUserDto } from './login-user.dto';
+import { LoginUserErrors } from './login-user.errors';
 
 import { mockJwtService } from '../../fixtures/mock-jwt-service';
 import { defaultUser } from '../../fixtures/user';
@@ -35,7 +36,9 @@ describe('LoginUserUseCase', () => {
     };
 
     const result = await loginUserUseCase.execute(loginUserDto);
-    expect(result.value.error.signature).toBe('userName.tooShort');
+    expect(result.value.error.message).toBe(
+      `userName is not at least 2 chars.`,
+    );
   });
 
   it('should returns UserNameDoesntExistError when user does not exist', async function() {
@@ -49,7 +52,9 @@ describe('LoginUserUseCase', () => {
     };
 
     const result = await loginUserUseCase.execute(loginUserDto);
-    expect(result.value.error.signature).toBe('wrongCredentialsProvided');
+    expect(result.value.constructor).toBe(
+      LoginUserErrors.UserNameDoesntExistError,
+    );
   });
 
   it('should returns PasswordDoesntMatchError when password is incorrect', async function() {
@@ -61,7 +66,9 @@ describe('LoginUserUseCase', () => {
     };
 
     const result = await loginUserUseCase.execute(loginUserDto);
-    expect(result.value.error.signature).toBe('wrongCredentialsProvided');
+    expect(result.value.constructor).toBe(
+      LoginUserErrors.PasswordDoesntMatchError,
+    );
   });
 
   it('should returns token', async function() {

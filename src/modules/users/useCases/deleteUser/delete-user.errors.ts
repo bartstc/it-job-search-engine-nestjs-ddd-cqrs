@@ -6,7 +6,6 @@ export namespace DeleteUserErrors {
     constructor() {
       super(false, {
         message: `User not found`,
-        signature: `userNotFound`,
       });
     }
   }

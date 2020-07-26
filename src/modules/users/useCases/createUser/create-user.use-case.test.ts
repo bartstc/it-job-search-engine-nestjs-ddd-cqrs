@@ -4,6 +4,7 @@ import { ContextType } from '../../domain/types';
 import { UserRepository } from '../../repositories';
 import { CreateUserDto } from './create-user.dto';
 import { CreateUserUseCase } from './create-user.use-case';
+import { CreateUserErrors } from './create-user.errors';
 
 import { mockUserRepository } from '../../fixtures/mock-user-repository';
 
@@ -31,7 +32,9 @@ describe('CreateUserUseCase', () => {
     } as CreateUserDto;
 
     const result = await createUserUseCase.execute(createUserDto);
-    expect(result.value.error.signature).toBe('userName.tooShort');
+    expect(result.value.error.message).toBe(
+      `userName is not at least 2 chars.`,
+    );
   });
 
   it('should returns EmailAlreadyExistsError when user already exists', async function() {
@@ -44,7 +47,9 @@ describe('CreateUserUseCase', () => {
     } as CreateUserDto;
 
     const result = await createUserUseCase.execute(createUserDto);
-    expect(result.value.error.signature).toBe('emailAlreadyTaken');
+    expect(result.value.constructor).toBe(
+      CreateUserErrors.EmailAlreadyExistsError,
+    );
   });
 
   it('should returns UsernameTakenError when username is taken', async function() {
@@ -58,7 +63,7 @@ describe('CreateUserUseCase', () => {
     } as CreateUserDto;
 
     const result = await createUserUseCase.execute(createUserDto);
-    expect(result.value.error.signature).toBe('usernameAlreadyTaken');
+    expect(result.value.constructor).toBe(CreateUserErrors.UsernameTakenError);
   });
 
   it('should return instance of User', async function() {

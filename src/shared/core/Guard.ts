@@ -1,7 +1,6 @@
 export interface IGuardResult {
   succeeded: boolean;
   message: string;
-  signature?: string;
 }
 
 export interface IGuardArgument {
@@ -35,7 +34,6 @@ export class Guard {
       : {
           succeeded: false,
           message: `${argumentName} - Number given {${actualValue}} is not greater than {${minValue}}`,
-          signature: `${argumentName}.shouldBeGreater`,
         };
   }
 
@@ -49,7 +47,6 @@ export class Guard {
       : {
           succeeded: false,
           message: `${argumentName} is not at least ${numChars} chars.`,
-          signature: `${argumentName}.tooShort`,
         };
   }
 
@@ -63,7 +60,6 @@ export class Guard {
       : {
           succeeded: false,
           message: `${argumentName} is greater than ${numChars} chars.`,
-          signature: `${argumentName}.tooLong`,
         };
   }
 
@@ -75,7 +71,6 @@ export class Guard {
       return {
         succeeded: false,
         message: `${argumentName} is null or undefined`,
-        signature: `${argumentName}.notNullOrUndefined`,
       };
     } else {
       return { ...successGuardResult };
@@ -116,7 +111,6 @@ export class Guard {
         message: `${argumentName} isn't oneOf the correct types in ${JSON.stringify(
           validValues,
         )}. Got "${value}".`,
-        signature: `${argumentName}.incorrectType`,
       };
     }
   }
@@ -132,7 +126,6 @@ export class Guard {
       return {
         succeeded: false,
         message: `${argumentName} is not within range ${min} to ${max}.`,
-        signature: `${argumentName}.notInRange`,
       };
     } else {
       return { ...successGuardResult };
@@ -155,7 +148,6 @@ export class Guard {
       return {
         succeeded: false,
         message: `${argumentName} is not within the range.`,
-        signature: `${argumentName}.notAllInRange`,
       };
     } else {
       return { ...successGuardResult };
@@ -169,7 +161,6 @@ export class Guard {
       return {
         succeeded: false,
         message: `${argumentName} must ba an array`,
-        signature: `${argumentName}.shouldBeTypeOfArray`,
       };
     }
 
@@ -177,7 +168,6 @@ export class Guard {
       return {
         succeeded: false,
         message: `${argumentName} cannot be empty`,
-        signature: `${argumentName}.shouldNotBeEmpty`,
       };
     }
 
@@ -192,7 +182,6 @@ export class Guard {
       return {
         succeeded: false,
         message: `All items of ${argumentName} list must by a string`,
-        signature: `${argumentName}.eachItemShouldBeString`,
       };
     }
 
@@ -207,7 +196,6 @@ export class Guard {
     return {
       succeeded: false,
       message: `${argumentName} is not a string`,
-      signature: `${argumentName}.notString`,
     };
   }
 
@@ -219,7 +207,6 @@ export class Guard {
     return {
       succeeded: false,
       message: `${argumentName} is not type of number`,
-      signature: `${argumentName}.notNumber`,
     };
   }
 }

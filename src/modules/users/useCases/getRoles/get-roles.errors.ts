@@ -6,7 +6,6 @@ export namespace GetRolesErrors {
     constructor() {
       super(false, {
         message: `Invalid context type`,
-        signature: `invalidContextType`,
       });
     }
   }

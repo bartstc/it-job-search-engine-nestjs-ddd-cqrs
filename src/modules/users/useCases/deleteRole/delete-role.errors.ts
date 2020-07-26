@@ -6,7 +6,6 @@ export namespace DeleteRoleErrors {
     constructor() {
       super(false, {
         message: `Role not found`,
-        signature: `roleNotFound`,
       });
     }
   }

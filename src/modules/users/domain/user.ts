@@ -82,7 +82,6 @@ export class User extends Entity<UserProps> {
     if (!this.contextTypeIsValid(props.contextType)) {
       return Result.fail({
         message: 'Invalid context type',
-        signature: 'contextType.invalid',
       });
     }
 

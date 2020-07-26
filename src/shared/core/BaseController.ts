@@ -2,7 +2,6 @@ import * as express from 'express';
 
 interface JsonBody {
   message: string;
-  signature?: string;
   error?: string;
 }
 
@@ -19,55 +18,45 @@ export abstract class BaseController {
     return res.sendStatus(201);
   }
 
-  public clientError(res: express.Response, { message, signature }: JsonBody) {
+  public clientError(res: express.Response, { message }: JsonBody) {
     return BaseController.jsonResponse(res, 400, {
       message: message ?? 'Unauthorized',
-      signature: signature ?? `unauthorized`,
     });
   }
 
-  public unauthorized(res: express.Response, { message, signature }: JsonBody) {
+  public unauthorized(res: express.Response, { message }: JsonBody) {
     return BaseController.jsonResponse(res, 401, {
       message: message ?? 'Unauthorized',
-      signature: signature ?? `unauthorized`,
     });
   }
 
-  public paymentRequired(
-    res: express.Response,
-    { message, signature }: JsonBody,
-  ) {
+  public paymentRequired(res: express.Response, { message }: JsonBody) {
     return BaseController.jsonResponse(res, 402, {
       message: message ?? 'Payment required',
-      signature: signature ?? `paymentRequired`,
     });
   }
 
-  public forbidden(res: express.Response, { message, signature }: JsonBody) {
+  public forbidden(res: express.Response, { message }: JsonBody) {
     return BaseController.jsonResponse(res, 403, {
       message: message ?? 'Unauthorized',
-      signature: signature ?? `unauthorized`,
     });
   }
 
-  public notFound(res: express.Response, { message, signature }: JsonBody) {
+  public notFound(res: express.Response, { message }: JsonBody) {
     return BaseController.jsonResponse(res, 404, {
       message: message ?? 'Not found',
-      signature: signature ?? `notFound`,
     });
   }
 
-  public conflict(res: express.Response, { message, signature }: JsonBody) {
+  public conflict(res: express.Response, { message }: JsonBody) {
     return BaseController.jsonResponse(res, 409, {
       message: message ?? 'Conflict',
-      signature: signature ?? `conflict`,
     });
   }
 
-  public tooMany(res: express.Response, { message, signature }: JsonBody) {
+  public tooMany(res: express.Response, { message }: JsonBody) {
     return BaseController.jsonResponse(res, 429, {
       message: message ?? 'Too many requests',
-      signature: signature ?? 'tooManyRequests',
     });
   }
 

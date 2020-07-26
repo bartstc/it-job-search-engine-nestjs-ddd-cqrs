@@ -8,7 +8,6 @@ export namespace AppError {
     public constructor(err: any) {
       super(false, {
         message: `An unexpected error occurred.`,
-        signature: `unexpectedError`,
         error: err,
       });
       console.log(`[AppError]: An unexpected error occurred`);
@@ -21,10 +20,9 @@ export namespace AppError {
   }
 
   export class ValidationError extends Result<ResultError> {
-    constructor({ message, signature }: ResultError) {
+    constructor({ message }: ResultError) {
       super(false, {
         message,
-        signature: signature || 'unknownValidationError',
       });
     }
   }

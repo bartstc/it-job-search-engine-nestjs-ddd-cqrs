@@ -6,7 +6,6 @@ export namespace CreateUserErrors {
     constructor(email: string) {
       super(false, {
         message: `The email ${email} associated for this account already exists`,
-        signature: `emailAlreadyTaken`,
       });
     }
   }
@@ -15,7 +14,6 @@ export namespace CreateUserErrors {
     constructor(username: string) {
       super(false, {
         message: `The username ${username} associated for this account already exists`,
-        signature: 'usernameAlreadyTaken',
       });
     }
   }

@@ -6,7 +6,6 @@ export namespace LoginUserErrors {
     constructor() {
       super(false, {
         message: `Username or password incorrect`,
-        signature: `wrongCredentialsProvided`,
       });
     }
   }
@@ -15,7 +14,6 @@ export namespace LoginUserErrors {
     constructor() {
       super(false, {
         message: `Username or password incorrect`,
-        signature: `wrongCredentialsProvided`,
       });
     }
   }

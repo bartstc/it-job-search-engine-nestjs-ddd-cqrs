@@ -28,7 +28,6 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     if (!this.isValidEmail(value)) {
       return Result.fail({
         message: `Email address ${value} not valid`,
-        signature: 'emailNotValid',
       });
     } else {
       return Result.ok(new UserEmail({ value: this.format(value) }));

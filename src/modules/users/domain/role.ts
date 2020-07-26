@@ -47,7 +47,6 @@ export class Role extends Entity<RoleProps> {
     if (!User.contextTypeIsValid(props.contextType)) {
       return Result.fail({
         message: 'Invalid context type',
-        signature: 'contextType.invalid',
       });
     }
 
