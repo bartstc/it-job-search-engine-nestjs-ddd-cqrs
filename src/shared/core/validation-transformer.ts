@@ -1,4 +1,11 @@
-import { ObjectSchema } from 'yup';
+import { ObjectSchema, setLocale } from 'yup';
+
+setLocale({
+  mixed: {
+    required: 'shouldBeDefined',
+    notType: 'invalidType',
+  },
+});
 
 import { Result } from './Result';
 
