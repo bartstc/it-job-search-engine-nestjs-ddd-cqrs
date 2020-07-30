@@ -23,7 +23,7 @@ export class UserName extends ValueObject<UserNameProps> {
       'username',
     );
     if (!usernameResult.succeeded) {
-      return Result.fail<UserName>(usernameResult);
+      return Result.fail(usernameResult);
     }
 
     const minLengthResult = Guard.againstAtLeast(
@@ -32,7 +32,7 @@ export class UserName extends ValueObject<UserNameProps> {
       'userName',
     );
     if (!minLengthResult.succeeded) {
-      return Result.fail<UserName>(minLengthResult);
+      return Result.fail(minLengthResult);
     }
 
     const maxLengthResult = Guard.againstAtMost(
@@ -41,9 +41,9 @@ export class UserName extends ValueObject<UserNameProps> {
       'userName',
     );
     if (!maxLengthResult.succeeded) {
-      return Result.fail<UserName>(minLengthResult);
+      return Result.fail(minLengthResult);
     }
 
-    return Result.ok<UserName>(new UserName(props));
+    return Result.ok(new UserName(props));
   }
 }

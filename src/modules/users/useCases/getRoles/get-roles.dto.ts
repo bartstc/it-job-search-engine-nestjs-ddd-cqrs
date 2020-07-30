@@ -1,5 +1,5 @@
-import { ContextType } from '../../domain/types';
+import { CtxType } from '../../domain/types';
 
 export interface GetRolesDto {
-  contextType: ContextType;
+  contextType: CtxType;
 }

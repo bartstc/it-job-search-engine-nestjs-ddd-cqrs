@@ -5,3 +5,4 @@ export { Mapper } from './Mapper';
 export { BaseController } from './BaseController';
 export { AbstractEntity } from './AbstractEntity';
 export { UnknownError, ResultError, AppError, UseCaseError } from './errors';
+export { ValidationTransformer } from './validation-transformer';

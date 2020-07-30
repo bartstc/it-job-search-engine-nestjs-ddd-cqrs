@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 import { AbstractEntity } from 'shared/core';
 
-import { ContextType } from '../domain/types';
+import { CtxType } from '../domain/types';
 
 @Entity('roles')
 export class RoleEntity extends AbstractEntity {
@@ -13,7 +13,7 @@ export class RoleEntity extends AbstractEntity {
   name: string;
 
   @Column()
-  contextType: ContextType;
+  contextType: CtxType;
 
   @Column('text', { array: true })
   permissions: string[];

@@ -1,8 +1,8 @@
-import { ContextType } from '../domain/types';
+import { CtxType } from '../domain/types';
 
 export class RoleDto {
   readonly roleId: string;
   readonly name: string;
-  readonly contextType: ContextType;
+  readonly contextType: CtxType;
   readonly permissions: string[];
 }

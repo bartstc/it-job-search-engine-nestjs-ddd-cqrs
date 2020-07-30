@@ -1,7 +1,7 @@
-import { ContextType } from '../../domain/types';
+import { CtxType } from '../../domain/types';
 
 export interface CreateRoleDto {
   name: string;
-  contextType: ContextType;
+  contextType: CtxType;
   permissions: string[];
 }

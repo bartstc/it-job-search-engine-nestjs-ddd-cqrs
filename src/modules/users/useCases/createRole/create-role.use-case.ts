@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Either, left, Result, right } from 'shared/core/Result';
-import { AppError, UseCase } from 'shared/core';
+import { AppError, UseCase, ValidationTransformer } from 'shared/core';
 
+import { createRoleSchema } from './create-role.schema';
 import { RoleRepository } from '../../repositories';
 import { RoleName } from '../../domain/role-name';
 import { CreateRoleDto } from './create-role.dto';
-import { Role } from '../../domain';
+import { ContextType, Role } from '../../domain';
 
 export type CreateRoleResponse = Either<
   AppError.ValidationError | AppError.UnexpectedError,
@@ -23,18 +24,32 @@ export class CreateRoleUseCase
   ) {}
 
   async execute(request: CreateRoleDto): Promise<CreateRoleResponse> {
-    const roleNameOrError = RoleName.create({ value: request.name });
+    const schemaErrors = await ValidationTransformer.validateSchema(
+      createRoleSchema,
+      request,
+    );
 
-    if (!roleNameOrError.isSuccess) {
-      return left(new AppError.ValidationError(roleNameOrError.error));
+    const roleNameOrError = RoleName.create({ value: request.name });
+    const contextTypeOrError = ContextType.create({
+      value: request.contextType,
+    });
+
+    const validationResult = ValidationTransformer.validateDto(schemaErrors, [
+      roleNameOrError,
+      contextTypeOrError,
+    ]);
+
+    if (!validationResult.isSuccess) {
+      return left(new AppError.ValidationError(validationResult.error));
     }
 
     const name = roleNameOrError.getValue();
+    const contextType = contextTypeOrError.getValue();
 
     try {
       const roleOrError = Role.create({
         name,
-        contextType: request.contextType,
+        contextType,
         permissions: request.permissions,
       });
 

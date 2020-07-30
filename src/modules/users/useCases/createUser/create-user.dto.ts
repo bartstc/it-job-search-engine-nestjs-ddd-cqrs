@@ -1,9 +1,9 @@
-import { ContextType } from '../../domain/types';
+import { CtxType } from '../../domain/types';
 
 export interface CreateUserDto {
   username: string;
   email: string;
   password: string;
-  contextType: ContextType;
+  contextType: CtxType;
   roleIds: string[];
 }

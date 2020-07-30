@@ -5,7 +5,7 @@ import { RoleEntity } from '../entities';
 import { Role } from '../domain';
 import { RoleRepo } from '../types';
 import { RoleMap } from '../mappers';
-import { ContextType } from '../domain/types';
+import { CtxType } from '../domain/types';
 
 @EntityRepository(RoleEntity)
 export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
@@ -34,7 +34,7 @@ export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
       .value();
   }
 
-  async getRolesByContextType(contextType: ContextType) {
+  async getRolesByContextType(contextType: CtxType) {
     const roles = await this.find({ where: { contextType } });
 
     return roles.map(role => RoleMap.toDomain(role));

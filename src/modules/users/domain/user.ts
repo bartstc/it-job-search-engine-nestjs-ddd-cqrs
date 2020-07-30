@@ -5,7 +5,7 @@ import { UserId } from './user-id';
 import { UserEmail } from './user-email';
 import { UserName } from './user-name';
 import { UserPassword } from './user-password';
-import { ContextType } from './types';
+import { ContextType } from './context-type';
 
 export class UserProps {
   email: UserEmail;
@@ -62,27 +62,17 @@ export class User extends Entity<UserProps> {
     super(props, id);
   }
 
-  public static contextTypeIsValid(value: any) {
-    return Object.values(ContextType).some(type => type === value);
-  }
-
   public static create(props: UserProps, id?: UniqueEntityID): Result<User> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
-      { argument: props.username, argumentName: 'username' },
-      { argument: props.password, argumentName: 'password' },
-      { argument: props.email, argumentName: 'email' },
-      { argument: props.contextType, argumentName: 'contextType' },
-      { argument: props.roleIds, argumentName: 'roleIds' },
+      { argument: props.username, argumentPath: 'username' },
+      { argument: props.password, argumentPath: 'password' },
+      { argument: props.email, argumentPath: 'email' },
+      { argument: props.contextType, argumentPath: 'contextType' },
+      { argument: props.roleIds, argumentPath: 'roleIds' },
     ]);
 
     if (!guardResult.succeeded) {
       return Result.fail(guardResult);
-    }
-
-    if (!this.contextTypeIsValid(props.contextType)) {
-      return Result.fail({
-        message: 'Invalid context type',
-      });
     }
 
     const isArrayGuardResult = Guard.isListOfStrings(props.roleIds, 'roleIds');

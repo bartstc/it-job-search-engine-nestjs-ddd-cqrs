@@ -4,7 +4,7 @@ import { Controller, Get, Logger, Param, Res } from '@nestjs/common';
 import { AppError, BaseController } from 'shared/core';
 
 import { RolesService } from '../../services';
-import { ContextType } from '../../domain/types';
+import { CtxType } from '../../domain/types';
 import { GetRolesErrors } from './get-roles.errors';
 import { GetRolesResponse } from './get-roles.use-case';
 
@@ -18,7 +18,7 @@ export class GetRolesController extends BaseController {
 
   @Get('roles/:contextType')
   async createRole(
-    @Param('contextType') contextType: ContextType,
+    @Param('contextType') contextType: CtxType,
     @Res() res: Response,
   ) {
     try {

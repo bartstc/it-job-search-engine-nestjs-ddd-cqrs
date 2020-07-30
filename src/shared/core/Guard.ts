@@ -5,75 +5,67 @@ export interface IGuardResult {
 
 export interface IGuardArgument {
   argument: any;
-  argumentName: string;
+  argumentPath: string;
 }
 
 export type GuardArgumentCollection = IGuardArgument[];
 
-const successGuardResult: IGuardResult = {
+const getSuccessResult = (argumentPath: string): IGuardResult => ({
   succeeded: true,
-  message: 'Success',
-};
+  message: `${argumentPath}.correct`,
+});
 
 export class Guard {
-  public static combine(guardResults: IGuardResult[]): IGuardResult {
-    for (const result of guardResults) {
-      if (result.succeeded) return result;
-    }
-
-    return { ...successGuardResult };
-  }
-
   public static greaterThan(
     minValue: number,
     actualValue: number,
-    argumentName: string,
+    argumentPath: string,
   ): IGuardResult {
     return actualValue > minValue
-      ? { ...successGuardResult }
+      ? getSuccessResult(argumentPath)
       : {
           succeeded: false,
-          message: `${argumentName} - Number given {${actualValue}} is not greater than {${minValue}}`,
+          message: `${argumentPath}.shouldBeGreaterThan${minValue}`,
         };
   }
 
   public static againstAtLeast(
     numChars: number,
     text: string,
-    argumentName: string,
+    argumentPath: string,
   ): IGuardResult {
     return text.length >= numChars
-      ? { ...successGuardResult }
+      ? getSuccessResult(argumentPath)
       : {
           succeeded: false,
-          message: `${argumentName} is not at least ${numChars} chars.`,
+          message: `${argumentPath}.shouldBeAtLeast${numChars}chars`,
         };
   }
 
   public static againstAtMost(
     numChars: number,
     text: string,
-    argumentName: string,
+    argumentPath: string,
   ): IGuardResult {
     return text.length <= numChars
-      ? { ...successGuardResult }
+      ? getSuccessResult(argumentPath)
       : {
           succeeded: false,
-          message: `${argumentName} is greater than ${numChars} chars.`,
+          message: `${argumentPath}.shouldBeLowerThan${numChars}chars`,
         };
   }
 
   public static againstNullOrUndefined(
     argument: any,
-    argumentName: string,
+    argumentPath: string,
   ): IGuardResult {
     if (argument === null || argument === undefined) {
       return {
         succeeded: false,
-        message: `${argumentName} is null or undefined`,
+        message: `${argumentPath}.shouldBeNotNullOrUndefined`,
       };
     } else {
-      return { ...successGuardResult };
+      return getSuccessResult(argumentPath);
     }
   }
 
@@ -83,18 +75,18 @@ export class Guard {
     for (const arg of args) {
       const result = this.againstNullOrUndefined(
         arg.argument,
-        arg.argumentName,
+        arg.argumentPath,
       );
       if (!result.succeeded) return result;
     }
 
-    return { ...successGuardResult };
+    return getSuccessResult(args[0].argumentPath);
   }
 
   public static isOneOf(
     value: any,
     validValues: any[],
-    argumentName: string,
+    argumentPath: string,
   ): IGuardResult {
     let isValid = false;
     for (const validValue of validValues) {
@@ -104,13 +96,11 @@ export class Guard {
     }
 
     if (isValid) {
-      return { ...successGuardResult };
+      return getSuccessResult(argumentPath);
     } else {
       return {
         succeeded: false,
-        message: `${argumentName} isn't oneOf the correct types in ${JSON.stringify(
-          validValues,
-        )}. Got "${value}".`,
+        message: `${argumentPath}.isInvalidType`,
       };
     }
   }
@@ -119,16 +109,16 @@ export class Guard {
     num: number,
     min: number,
     max: number,
-    argumentName: string,
+    argumentPath: string,
   ): IGuardResult {
     const isInRange = num >= min && num <= max;
     if (!isInRange) {
       return {
         succeeded: false,
-        message: `${argumentName} is not within range ${min} to ${max}.`,
+        message: `${argumentPath}.shouldBeWithinRange${min}to${max}`,
       };
     } else {
-      return { ...successGuardResult };
+      return getSuccessResult(argumentPath);
     }
   }
 
@@ -136,38 +126,38 @@ export class Guard {
     numbers: number[],
     min: number,
     max: number,
-    argumentName: string,
+    argumentPath: string,
   ): IGuardResult {
     let failingResult: IGuardResult | null = null;
     for (const num of numbers) {
-      const numIsInRangeResult = this.inRange(num, min, max, argumentName);
+      const numIsInRangeResult = this.inRange(num, min, max, argumentPath);
       if (!numIsInRangeResult.succeeded) failingResult = numIsInRangeResult;
     }
 
     if (failingResult) {
       return {
         succeeded: false,
-        message: `${argumentName} is not within the range.`,
+        message: `${argumentPath}.shouldBeWithinRange${min}to${max}`,
       };
     } else {
-      return { ...successGuardResult };
+      return getSuccessResult(argumentPath);
     }
   }
 
-  public static isListOfStrings(list: any, argumentName: string): IGuardResult {
+  public static isListOfStrings(list: any, argumentPath: string): IGuardResult {
     let failingResult: IGuardResult | null = null;
 
     if (!Array.isArray(list)) {
       return {
         succeeded: false,
-        message: `${argumentName} must ba an array`,
+        message: `${argumentPath}.shouldBeArray`,
       };
     }
 
     if (list.length === 0) {
       return {
         succeeded: false,
-        message: `${argumentName} cannot be empty`,
+        message: `${argumentPath}.shouldBeNotEmpty`,
       };
     }
 
@@ -181,32 +171,32 @@ export class Guard {
     if (failingResult) {
       return {
         succeeded: false,
-        message: `All items of ${argumentName} list must by a string`,
+        message: `${argumentPath}.allItemsShouldBeTypeOfString`,
       };
     }
 
-    return { ...successGuardResult };
+    return getSuccessResult(argumentPath);
   }
 
-  public static isString(value: any, argumentName: string): IGuardResult {
+  public static isString(value: any, argumentPath: string): IGuardResult {
     if (typeof value === 'string' || value instanceof String) {
-      return { ...successGuardResult };
+      return getSuccessResult(argumentPath);
     }
 
     return {
       succeeded: false,
-      message: `${argumentName} is not a string`,
+      message: `${argumentPath}.shouldBeString`,
     };
   }
 
-  public static isNumber(value: any, argumentName: string): IGuardResult {
+  public static isNumber(value: any, argumentPath: string): IGuardResult {
     if (typeof value === 'number') {
-      return { ...successGuardResult };
+      return getSuccessResult(argumentPath);
     }
 
     return {
       succeeded: false,
-      message: `${argumentName} is not type of number`,
+      message: `${argumentPath}.shouldBeNumber`,
     };
   }
 }

@@ -7,7 +7,7 @@ import { GetRolesErrors } from './get-roles.errors';
 import { GetRolesDto } from './get-roles.dto';
 import { RoleRepository } from '../../repositories';
 import { RoleDto } from '../../dtos';
-import { User, Role } from '../../domain';
+import { Role, ContextType } from '../../domain';
 import { RoleMap } from '../../mappers';
 
 export type GetRolesResponse = Either<
@@ -26,7 +26,7 @@ export class GetRolesUseCase
   async execute({ contextType }: GetRolesDto): Promise<GetRolesResponse> {
     let roles: Role[];
 
-    if (!User.contextTypeIsValid(contextType)) {
+    if (!ContextType.contextTypeIsValid(contextType)) {
       return left(new GetRolesErrors.InvalidContextTypeError());
     }
 

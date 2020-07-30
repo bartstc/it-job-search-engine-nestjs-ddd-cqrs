@@ -1,7 +1,13 @@
 import { Mapper } from 'shared/core';
 import { UniqueEntityID } from 'shared/domain';
 
-import { User, UserEmail, UserName, UserPassword } from '../domain';
+import {
+  ContextType,
+  User,
+  UserEmail,
+  UserName,
+  UserPassword,
+} from '../domain';
 import { UserDto } from '../dtos';
 import { UserEntity } from '../entities';
 
@@ -10,7 +16,7 @@ export class UserMap implements Mapper<User> {
     return {
       userId: user.userId.id.toString(),
       username: user.username.value,
-      contextType: user.contextType,
+      contextType: user.contextType.value,
       isEmailVerified: user.isEmailVerified,
       email: user.email.value,
       roleIds: user.roleIds,
@@ -25,15 +31,18 @@ export class UserMap implements Mapper<User> {
       value: entity.password,
       hashed: true,
     });
+    const contextTypeOrError = ContextType.create({
+      value: entity.contextType,
+    });
 
     const userOrError = User.create(
       {
         username: userNameOrError.getValue(),
         password: userPasswordOrError.getValue(),
         email: userEmailOrError.getValue(),
+        contextType: contextTypeOrError.getValue(),
         isDeleted: entity.isDeleted,
         isEmailVerified: entity.isEmailVerified,
-        contextType: entity.contextType,
         roleIds: entity.roleIds,
       },
       new UniqueEntityID(entity.userId),
@@ -58,11 +67,11 @@ export class UserMap implements Mapper<User> {
       userId: user.userId.id.toString(),
       email: user.email.value,
       username: user.username.value,
+      contextType: user.contextType.value,
       isEmailVerified: user.isEmailVerified,
       password: password,
       roleIds: user.roleIds,
       isDeleted: user.isDeleted,
-      contextType: user.contextType,
     };
   }
 }

@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryColumn, Unique } from 'typeorm';
 
 import { AbstractEntity } from 'shared/core';
 
-import { ContextType } from '../domain/types';
+import { CtxType } from '../domain/types';
 
 @Entity('users')
 @Unique(['email', 'username'])
@@ -26,7 +26,7 @@ export class UserEntity extends AbstractEntity {
   isEmailVerified: boolean;
 
   @Column()
-  contextType: ContextType;
+  contextType: CtxType;
 
   @Column('text', { array: true })
   roleIds: string[];

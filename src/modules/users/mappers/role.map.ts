@@ -2,7 +2,7 @@ import { UniqueEntityID } from 'shared/domain';
 import { Mapper } from 'shared/core';
 
 import { RoleEntity } from '../entities';
-import { Role } from '../domain/role';
+import { ContextType, Role } from '../domain';
 import { RoleDto } from '../dtos';
 import { RoleName } from '../domain/role-name';
 
@@ -11,7 +11,7 @@ export class RoleMap implements Mapper<Role> {
     return {
       roleId: role.roleId.id.toString(),
       name: role.name.value,
-      contextType: role.contextType,
+      contextType: role.contextType.value,
       permissions: role.permissions,
     };
   }
@@ -20,18 +20,21 @@ export class RoleMap implements Mapper<Role> {
     return roles.map(role => ({
       roleId: role.roleId.id.toString(),
       name: role.name.value,
-      contextType: role.contextType,
+      contextType: role.contextType.value,
       permissions: role.permissions,
     }));
   }
 
   static toDomain(entity: RoleEntity): Role {
     const roleNameOrError = RoleName.create({ value: entity.name });
+    const contextTypeOrError = ContextType.create({
+      value: entity.contextType,
+    });
 
     const roleOrError = Role.create(
       {
         name: roleNameOrError.getValue(),
-        contextType: entity.contextType,
+        contextType: contextTypeOrError.getValue(),
         permissions: entity.permissions,
       },
       new UniqueEntityID(entity.roleId),
@@ -44,9 +47,9 @@ export class RoleMap implements Mapper<Role> {
   static async toPersistence(role: Role): Promise<Partial<RoleEntity>> {
     return {
       roleId: role.roleId.id.toString(),
-      contextType: role.contextType,
-      permissions: role.permissions,
       name: role.name.value,
+      contextType: role.contextType.value,
+      permissions: role.permissions,
     };
   }
 }

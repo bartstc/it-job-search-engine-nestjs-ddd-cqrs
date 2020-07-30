@@ -20,9 +20,10 @@ export namespace AppError {
   }
 
   export class ValidationError extends Result<ResultError> {
-    constructor({ message }: ResultError) {
+    constructor({ message, error }: ResultError) {
       super(false, {
         message,
+        error,
       });
     }
   }

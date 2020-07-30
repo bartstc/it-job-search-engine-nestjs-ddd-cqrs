@@ -2,11 +2,10 @@ import { Guard, Result } from 'shared/core';
 import { Entity, UniqueEntityID } from 'shared/domain';
 
 import { UserId } from './user-id';
-import { ContextType } from './types';
 import { RoleName } from './role-name';
-import { User } from './user';
+import { ContextType } from './context-type';
 
-interface RoleProps {
+export interface RoleProps {
   name: RoleName;
   contextType: ContextType;
   permissions: string[];
@@ -35,19 +34,13 @@ export class Role extends Entity<RoleProps> {
 
   public static create(props: RoleProps, id?: UniqueEntityID): Result<Role> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
-      { argument: props.name, argumentName: 'roleName' },
-      { argument: props.contextType, argumentName: 'contextType' },
-      { argument: props.permissions, argumentName: 'permissions' },
+      { argument: props.name, argumentPath: 'roleName' },
+      { argument: props.contextType, argumentPath: 'contextType' },
+      { argument: props.permissions, argumentPath: 'permissions' },
     ]);
 
     if (!guardResult.succeeded) {
       return Result.fail(guardResult);
-    }
-
-    if (!User.contextTypeIsValid(props.contextType)) {
-      return Result.fail({
-        message: 'Invalid context type',
-      });
     }
 
     const isArrayGuardResult = Guard.isListOfStrings(

@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 
-import { ContextType } from '../../domain/types';
+import { CtxType } from '../../domain/types';
 import { UserRepository } from '../../repositories';
 import { CreateUserDto } from './create-user.dto';
 import { CreateUserUseCase } from './create-user.use-case';
@@ -74,7 +74,7 @@ describe('CreateUserUseCase', () => {
       username: 'bob',
       email: 'bob@bob.com',
       password: 'test123',
-      contextType: ContextType.Brand,
+      contextType: CtxType.Brand,
       roleIds: ['test'],
     };
 

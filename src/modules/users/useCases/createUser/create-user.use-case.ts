@@ -4,7 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Either, left, Result, right } from 'shared/core/Result';
 import { AppError, UseCase } from 'shared/core';
 
-import { User, UserEmail, UserName, UserPassword } from '../../domain';
+import {
+  ContextType,
+  User,
+  UserEmail,
+  UserName,
+  UserPassword,
+} from '../../domain';
 import { UserRepository } from '../../repositories';
 import { CreateUserErrors } from './create-user.errors';
 import { CreateUserDto } from './create-user.dto';
@@ -29,6 +35,9 @@ export class CreateUserUseCase
     const emailOrError = UserEmail.create({ value: request.email });
     const passwordOrError = UserPassword.create({ value: request.password });
     const usernameOrError = UserName.create({ value: request.username });
+    const contextTypeOrError = ContextType.create({
+      value: request.contextType,
+    });
 
     const dtoResult = Result.combine([
       emailOrError,
@@ -43,6 +52,7 @@ export class CreateUserUseCase
     const email = emailOrError.getValue();
     const password = passwordOrError.getValue();
     const username = usernameOrError.getValue();
+    const contextType = contextTypeOrError.getValue();
 
     try {
       const userAlreadyExists = await this.userRepository.exists(email.value);
@@ -65,7 +75,7 @@ export class CreateUserUseCase
         email,
         password,
         username,
-        contextType: request.contextType,
+        contextType,
         roleIds: request.roleIds,
         isEmailVerified: false,
         isDeleted: false,
