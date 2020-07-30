@@ -23,21 +23,17 @@ export class CreateRoleUseCase
     private roleRepository: RoleRepository,
   ) {}
 
-  async execute(request: CreateRoleDto): Promise<CreateRoleResponse> {
-    const schemaErrors = await ValidationTransformer.validateSchema(
-      createRoleSchema,
-      request,
-    );
-
-    const roleNameOrError = RoleName.create({ value: request.name });
+  async execute(dto: CreateRoleDto): Promise<CreateRoleResponse> {
+    const roleNameOrError = RoleName.create({ value: dto.name });
     const contextTypeOrError = ContextType.create({
-      value: request.contextType,
+      value: dto.contextType,
     });
 
-    const validationResult = ValidationTransformer.validateDto(schemaErrors, [
-      roleNameOrError,
-      contextTypeOrError,
-    ]);
+    const validationResult = await ValidationTransformer.extractExceptions({
+      dto,
+      schema: createRoleSchema,
+      results: [roleNameOrError, contextTypeOrError],
+    });
 
     if (!validationResult.isSuccess) {
       return left(new AppError.ValidationError(validationResult.error));
@@ -50,7 +46,7 @@ export class CreateRoleUseCase
       const roleOrError = Role.create({
         name,
         contextType,
-        permissions: request.permissions,
+        permissions: dto.permissions,
       });
 
       if (!roleOrError.isSuccess) {

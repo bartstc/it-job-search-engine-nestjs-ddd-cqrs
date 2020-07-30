@@ -18,32 +18,29 @@ export class RoleName extends ValueObject<RoleNameProps> {
   }
 
   public static create(props: RoleNameProps): Result<RoleName> {
-    const roleNameResult = Guard.againstNullOrUndefined(
-      props.value,
-      'roleName',
-    );
+    const roleNameResult = Guard.againstNullOrUndefined(props.value, 'name');
     if (!roleNameResult.succeeded) {
-      return Result.fail<RoleName>(roleNameResult);
+      return Result.fail(roleNameResult);
     }
 
     const minLengthResult = Guard.againstAtLeast(
       this.minLength,
       props.value,
-      'roleName',
+      'name',
     );
     if (!minLengthResult.succeeded) {
-      return Result.fail<RoleName>(minLengthResult);
+      return Result.fail(minLengthResult);
     }
 
     const maxLengthResult = Guard.againstAtMost(
       this.maxLength,
       props.value,
-      'roleName',
+      'name',
     );
     if (!maxLengthResult.succeeded) {
-      return Result.fail<RoleName>(minLengthResult);
+      return Result.fail(minLengthResult);
     }
 
-    return Result.ok<RoleName>(new RoleName(props));
+    return Result.ok(new RoleName(props));
   }
 }

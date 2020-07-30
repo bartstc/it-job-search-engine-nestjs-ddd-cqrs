@@ -1,13 +1,22 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 
-import { AppError, Either, left, Result, right, UseCase } from 'shared/core';
+import {
+  AppError,
+  Either,
+  left,
+  Result,
+  right,
+  UseCase,
+  ValidationTransformer,
+} from 'shared/core';
 
 import { JwtPayload } from '../../domain/types';
 import { User, UserName, UserPassword } from '../../domain';
 import { UserRepository } from '../../repositories';
 import { LoginUserErrors } from './login-user.errors';
 import { LoginUserDtoResponse, LoginUserDto } from './login-user.dto';
+import { loginUserSchema } from './login-user.schema';
 
 export type LoginUserResponse = Either<
   | LoginUserErrors.PasswordDoesntMatchError
@@ -25,19 +34,23 @@ export class LoginUserUseCase
     private jwtService: JwtService,
   ) {}
 
-  async execute(request: LoginUserDto): Promise<LoginUserResponse> {
+  async execute(dto: LoginUserDto): Promise<LoginUserResponse> {
     let user: User;
     let username: UserName;
     let password: UserPassword;
 
     try {
-      const usernameOrError = UserName.create({ value: request.username });
-      const passwordOrError = UserPassword.create({ value: request.password });
+      const usernameOrError = UserName.create({ value: dto.username });
+      const passwordOrError = UserPassword.create({ value: dto.password });
 
-      const payloadResult = Result.combine([usernameOrError, passwordOrError]);
+      const validationResult = await ValidationTransformer.extractExceptions({
+        dto,
+        schema: loginUserSchema,
+        results: [usernameOrError, passwordOrError],
+      });
 
-      if (!payloadResult.isSuccess) {
-        return left(new AppError.ValidationError({ ...payloadResult.error }));
+      if (!validationResult.isSuccess) {
+        return left(new AppError.ValidationError(validationResult.error));
       }
 
       username = usernameOrError.getValue();

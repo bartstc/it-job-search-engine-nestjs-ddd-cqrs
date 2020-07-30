@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Either, left, Result, right } from 'shared/core/Result';
-import { AppError, UseCase } from 'shared/core';
+import { AppError, UseCase, ValidationTransformer } from 'shared/core';
 
 import {
   ContextType,
@@ -14,6 +14,7 @@ import {
 import { UserRepository } from '../../repositories';
 import { CreateUserErrors } from './create-user.errors';
 import { CreateUserDto } from './create-user.dto';
+import { createUserSchema } from './create-user.schema';
 
 export type CreateUserResponse = Either<
   | CreateUserErrors.EmailAlreadyExistsError
@@ -31,22 +32,27 @@ export class CreateUserUseCase
     private userRepository: UserRepository,
   ) {}
 
-  async execute(request: CreateUserDto): Promise<CreateUserResponse> {
-    const emailOrError = UserEmail.create({ value: request.email });
-    const passwordOrError = UserPassword.create({ value: request.password });
-    const usernameOrError = UserName.create({ value: request.username });
+  async execute(dto: CreateUserDto): Promise<CreateUserResponse> {
+    const emailOrError = UserEmail.create({ value: dto.email });
+    const passwordOrError = UserPassword.create({ value: dto.password });
+    const usernameOrError = UserName.create({ value: dto.username });
     const contextTypeOrError = ContextType.create({
-      value: request.contextType,
+      value: dto.contextType,
     });
 
-    const dtoResult = Result.combine([
-      emailOrError,
-      passwordOrError,
-      usernameOrError,
-    ]);
+    const validationResult = await ValidationTransformer.extractExceptions({
+      dto,
+      schema: createUserSchema,
+      results: [
+        emailOrError,
+        passwordOrError,
+        usernameOrError,
+        contextTypeOrError,
+      ],
+    });
 
-    if (!dtoResult.isSuccess) {
-      return left(new AppError.ValidationError(dtoResult.error));
+    if (!validationResult.isSuccess) {
+      return left(new AppError.ValidationError(validationResult.error));
     }
 
     const email = emailOrError.getValue();
@@ -76,7 +82,7 @@ export class CreateUserUseCase
         password,
         username,
         contextType,
-        roleIds: request.roleIds,
+        roleIds: dto.roleIds,
         isEmailVerified: false,
         isDeleted: false,
       });

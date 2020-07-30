@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Controller, Delete, Logger, Param, Res } from '@nestjs/common';
 
-import { AppError, BaseController } from 'shared/core';
+import { BaseController } from 'shared/core';
 
 import { RolesService } from '../../services';
 import { DeleteRoleErrors } from './delete-role.errors';
@@ -27,8 +27,6 @@ export class DeleteRoleController extends BaseController {
         this.logger.error(error.errorValue());
 
         switch (error.constructor) {
-          case AppError.ValidationError:
-            return this.clientError(res, error.errorValue());
           case DeleteRoleErrors.RoleNotFoundError:
             return this.notFound(res, error.errorValue());
           default:

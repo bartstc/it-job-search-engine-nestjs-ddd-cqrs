@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Controller, Get, Logger, Param, Res } from '@nestjs/common';
 
-import { AppError, BaseController } from 'shared/core';
+import { BaseController } from 'shared/core';
 
 import { RolesService } from '../../services';
 import { CtxType } from '../../domain/types';
@@ -32,7 +32,6 @@ export class GetRolesController extends BaseController {
 
         switch (error.constructor) {
           case GetRolesErrors.InvalidContextTypeError:
-          case AppError.ValidationError:
             return this.clientError(res, error.errorValue());
           default:
             return this.fail(res, error.errorValue());

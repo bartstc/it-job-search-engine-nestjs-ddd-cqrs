@@ -62,7 +62,7 @@ export class Guard {
     if (argument === null || argument === undefined) {
       return {
         succeeded: false,
-        message: `${argumentPath}.shouldBeNotNullOrUndefined`,
+        message: `${argumentPath}.shouldBeDefined`,
       };
     } else {
       return getSuccessResult(argumentPath);

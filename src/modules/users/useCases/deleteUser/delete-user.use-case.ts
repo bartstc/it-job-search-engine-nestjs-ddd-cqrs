@@ -19,12 +19,12 @@ export class DeleteUserUseCase
     private userRepository: UserRepository,
   ) {}
 
-  async execute(request: DeleteUserDto): Promise<DeleteUserResponse> {
+  async execute(dto: DeleteUserDto): Promise<DeleteUserResponse> {
     let user: User;
 
     try {
       try {
-        user = await this.userRepository.getUserByUserId(request.userId);
+        user = await this.userRepository.getUserByUserId(dto.userId);
       } catch (err) {
         return left(new DeleteUserErrors.UserNotFoundError());
       }

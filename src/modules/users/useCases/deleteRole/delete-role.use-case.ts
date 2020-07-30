@@ -19,12 +19,12 @@ export class DeleteRoleUseCase
     private roleRepository: RoleRepository,
   ) {}
 
-  async execute(request: DeleteRoleDto): Promise<DeleteRoleResponse> {
+  async execute(dto: DeleteRoleDto): Promise<DeleteRoleResponse> {
     let role: Role;
 
     try {
       try {
-        role = await this.roleRepository.getRoleByRoleId(request.roleId);
+        role = await this.roleRepository.getRoleByRoleId(dto.roleId);
       } catch (err) {
         return left(new DeleteRoleErrors.RoleNotFoundError());
       }

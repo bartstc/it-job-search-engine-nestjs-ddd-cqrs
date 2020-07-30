@@ -1,5 +1,5 @@
 import { ValueObject } from 'shared/domain';
-import { Result } from 'shared/core';
+import { Guard, Result } from 'shared/core';
 
 export interface UserEmailProps {
   value: string;
@@ -25,9 +25,14 @@ export class UserEmail extends ValueObject<UserEmailProps> {
 
   // todo: handle error via Either monad: EmailInvalidError
   public static create({ value }: UserEmailProps): Result<UserEmail> {
+    const emailResult = Guard.againstNullOrUndefined(value, 'email');
+    if (!emailResult.succeeded) {
+      return Result.fail(emailResult);
+    }
+
     if (!this.isValidEmail(value)) {
       return Result.fail({
-        message: `Email address ${value} not valid`,
+        message: `email.isInvalid`,
       });
     } else {
       return Result.ok(new UserEmail({ value: this.format(value) }));

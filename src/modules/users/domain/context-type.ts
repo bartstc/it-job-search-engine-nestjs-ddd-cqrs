@@ -26,7 +26,7 @@ export class ContextType extends ValueObject<ContextTypeProps> {
       'contextType',
     );
     if (!contextTypeResult.succeeded) {
-      return Result.fail<ContextType>(contextTypeResult);
+      return Result.fail(contextTypeResult);
     }
 
     if (!this.contextTypeIsValid(props.value)) {
