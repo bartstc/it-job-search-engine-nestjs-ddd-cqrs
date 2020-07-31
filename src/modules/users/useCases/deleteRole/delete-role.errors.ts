@@ -5,7 +5,7 @@ export namespace DeleteRoleErrors {
   export class RoleNotFoundError extends Result<UseCaseError> {
     constructor() {
       super(false, {
-        message: `Role not found`,
+        message: `roleNotFound`,
       });
     }
   }

@@ -1,6 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 
+import { AppError } from 'shared/core/errors';
+
 import { UserRepository } from '../../repositories';
 import { LoginUserUseCase } from './login-user.use-case';
 import { LoginUserDto } from './login-user.dto';
@@ -36,14 +38,12 @@ describe('LoginUserUseCase', () => {
     };
 
     const result = await loginUserUseCase.execute(loginUserDto);
-    expect(result.value.error.message).toBe(
-      `userName is not at least 2 chars.`,
-    );
+    expect(result.value.constructor).toBe(AppError.ValidationError);
   });
 
   it('should returns UserNameDoesntExistError when user does not exist', async function() {
     userRepository.getUserByUsername.mockImplementationOnce(() => {
-      throw new Error('User not found');
+      throw new Error('userNotFound');
     });
 
     const loginUserDto: LoginUserDto = {

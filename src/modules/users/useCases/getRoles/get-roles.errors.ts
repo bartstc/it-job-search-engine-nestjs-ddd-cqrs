@@ -5,7 +5,7 @@ export namespace GetRolesErrors {
   export class InvalidContextTypeError extends Result<UseCaseError> {
     constructor() {
       super(false, {
-        message: `Invalid context type`,
+        message: `invalidContextType`,
       });
     }
   }

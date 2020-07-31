@@ -5,7 +5,7 @@ export namespace CreateUserErrors {
   export class EmailAlreadyExistsError extends Result<UseCaseError> {
     constructor(email: string) {
       super(false, {
-        message: `The email ${email} associated for this account already exists`,
+        message: `${email}.emailAlreadyInUse`,
       });
     }
   }
@@ -13,7 +13,7 @@ export namespace CreateUserErrors {
   export class UsernameTakenError extends Result<UseCaseError> {
     constructor(username: string) {
       super(false, {
-        message: `The username ${username} associated for this account already exists`,
+        message: `${username}.usernameAlreadyInUse`,
       });
     }
   }

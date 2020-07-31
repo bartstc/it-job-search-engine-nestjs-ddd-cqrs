@@ -1,5 +1,7 @@
 import { Test } from '@nestjs/testing';
 
+import { AppError } from 'shared/core/errors';
+
 import { CtxType } from '../../domain/types';
 import { UserRepository } from '../../repositories';
 import { CreateUserDto } from './create-user.dto';
@@ -32,19 +34,19 @@ describe('CreateUserUseCase', () => {
     } as CreateUserDto;
 
     const result = await createUserUseCase.execute(createUserDto);
-    expect(result.value.error.message).toBe(
-      `userName is not at least 2 chars.`,
-    );
+    expect(result.value.constructor).toBe(AppError.ValidationError);
   });
 
   it('should returns EmailAlreadyExistsError when user already exists', async function() {
     userRepository.exists.mockResolvedValue(true);
 
-    const createUserDto = {
+    const createUserDto: CreateUserDto = {
       username: 'bob',
       email: 'bob@bob.com',
       password: 'test123',
-    } as CreateUserDto;
+      contextType: CtxType.Brand,
+      roleIds: ['testId'],
+    };
 
     const result = await createUserUseCase.execute(createUserDto);
     expect(result.value.constructor).toBe(
@@ -56,11 +58,13 @@ describe('CreateUserUseCase', () => {
     userRepository.exists.mockResolvedValue(false);
     userRepository.getUserByUsername.mockResolvedValue({ username: 'bob' });
 
-    const createUserDto = {
+    const createUserDto: CreateUserDto = {
       username: 'bob',
       email: 'bob@bob.com',
       password: 'test123',
-    } as CreateUserDto;
+      contextType: CtxType.Brand,
+      roleIds: ['testId'],
+    };
 
     const result = await createUserUseCase.execute(createUserDto);
     expect(result.value.constructor).toBe(CreateUserErrors.UsernameTakenError);

@@ -5,7 +5,7 @@ export namespace DeleteUserErrors {
   export class UserNotFoundError extends Result<UseCaseError> {
     constructor() {
       super(false, {
-        message: `User not found`,
+        message: `userNotFound`,
       });
     }
   }
