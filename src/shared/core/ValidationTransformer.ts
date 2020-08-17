@@ -1,4 +1,5 @@
 import { ObjectSchema, setLocale } from 'yup';
+import { Result } from './Result';
 
 setLocale({
   mixed: {
@@ -6,8 +7,6 @@ setLocale({
     notType: 'invalidType',
   },
 });
-
-import { Result } from './Result';
 
 interface DtoErrors {
   [key: string]: string;
