@@ -15,7 +15,7 @@ export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
   }
 
   async getRoleByRoleId(roleId: string) {
-    const role = await this.findOne({ roleId });
+    const role = await this.findOne({ role_id: roleId });
     if (!role) throw new Error('Role not found');
 
     return RoleMap.toDomain(role);
@@ -23,7 +23,7 @@ export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
 
   async getPermissions(roleIds: string[]) {
     const roles = await this.createQueryBuilder('role')
-      .where('role.roleId IN (:...ids)', { ids: roleIds })
+      .where('role.role_id IN (:...ids)', { ids: roleIds })
       .select('permissions')
       .getMany();
 
@@ -35,7 +35,7 @@ export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
   }
 
   async getRolesByContextType(contextType: CtxType) {
-    const roles = await this.find({ where: { contextType } });
+    const roles = await this.find({ where: { context_type: contextType } });
 
     return roles.map(role => RoleMap.toDomain(role));
   }
@@ -52,7 +52,7 @@ export class RoleRepository extends Repository<RoleEntity> implements RoleRepo {
   async deleteRole(role: Role) {
     const roleId = role.roleId.id.toString();
     const deleteResult = await this.delete({
-      roleId,
+      role_id: roleId,
     });
 
     if (deleteResult.affected === 0) {

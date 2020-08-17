@@ -21,15 +21,6 @@ export class Skills extends ValueObject<SkillsProps> {
       return Result.fail(nullGuardResult);
     }
 
-    const listOfStringsGuardResult = Guard.isListOfStrings(
-      props.value,
-      'skills',
-    );
-
-    if (!listOfStringsGuardResult.succeeded) {
-      return Result.fail(listOfStringsGuardResult);
-    }
-
     return Result.ok(new Skills(props));
   }
 }

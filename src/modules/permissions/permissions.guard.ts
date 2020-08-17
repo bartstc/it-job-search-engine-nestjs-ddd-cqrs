@@ -21,7 +21,7 @@ export class PermissionsGuard implements CanActivate {
     const user: UserEntity = req.user;
 
     const userPermissions = await this.roleRepository.getPermissions(
-      user.roleIds,
+      user.role_ids,
     );
 
     return permissions.every(permission =>

@@ -30,18 +30,19 @@ export class Price extends ValueObject<PriceProps> {
   }
 
   public static create(props: PriceProps): Result<Price> {
-    const args = [
+    const nullGuard = Guard.againstNullOrUndefinedBulk([
       { argument: props.priceMin, argumentPath: 'priceMin' },
       { argument: props.priceMax, argumentPath: 'priceMax' },
       { argument: props.currency, argumentPath: 'currency' },
-    ];
-
-    const nullGuard = Guard.againstNullOrUndefinedBulk(args);
+    ]);
     if (!nullGuard.succeeded) {
       return Result.fail(nullGuard);
     }
 
-    const numberGuard = Guard.allIsNumber(args);
+    const numberGuard = Guard.allIsNumber([
+      { argument: props.priceMin, argumentPath: 'priceMin' },
+      { argument: props.priceMax, argumentPath: 'priceMax' },
+    ]);
     if (!numberGuard.succeeded) {
       return Result.fail(numberGuard);
     }

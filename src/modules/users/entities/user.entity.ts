@@ -8,7 +8,7 @@ import { CtxType } from '../domain/types';
 @Unique(['email', 'username'])
 export class UserEntity extends AbstractEntity {
   @PrimaryColumn()
-  userId: string;
+  user_id: string;
 
   @Column()
   email: string;
@@ -20,14 +20,14 @@ export class UserEntity extends AbstractEntity {
   password: string;
 
   @Column({ default: false })
-  isDeleted: boolean;
+  is_deleted: boolean;
 
   @Column({ default: false })
-  isEmailVerified: boolean;
+  is_email_verified: boolean;
 
   @Column()
-  contextType: CtxType;
+  context_type: CtxType;
 
   @Column('text', { array: true })
-  roleIds: string[];
+  role_ids: string[];
 }

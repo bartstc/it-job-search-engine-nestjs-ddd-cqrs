@@ -28,7 +28,7 @@ export class RoleMap implements Mapper<Role> {
   static toDomain(entity: RoleEntity): Role {
     const roleNameOrError = RoleName.create({ value: entity.name });
     const contextTypeOrError = ContextType.create({
-      value: entity.contextType,
+      value: entity.context_type,
     });
 
     const roleOrError = Role.create(
@@ -37,7 +37,7 @@ export class RoleMap implements Mapper<Role> {
         contextType: contextTypeOrError.getValue(),
         permissions: entity.permissions,
       },
-      new UniqueEntityID(entity.roleId),
+      new UniqueEntityID(entity.role_id),
     );
 
     !roleOrError.isSuccess ? console.log(roleOrError.error) : '';
@@ -46,9 +46,9 @@ export class RoleMap implements Mapper<Role> {
 
   static async toPersistence(role: Role): Promise<Partial<RoleEntity>> {
     return {
-      roleId: role.roleId.id.toString(),
+      role_id: role.roleId.id.toString(),
       name: role.name.value,
-      contextType: role.contextType.value,
+      context_type: role.contextType.value,
       permissions: role.permissions,
     };
   }

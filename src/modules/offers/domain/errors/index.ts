@@ -1,6 +1,5 @@
 import { IGuardResult } from 'shared/core/Guard';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace OfferErrors {
   export class InvalidTechnologyError implements IGuardResult {
     succeeded = false;

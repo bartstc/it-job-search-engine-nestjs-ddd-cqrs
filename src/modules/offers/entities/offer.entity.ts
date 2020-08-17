@@ -3,15 +3,11 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { AbstractEntity } from 'shared/core';
 
 import { Currency, EmploymentType, Level, Technology } from '../domain/types';
-const test = `INSERT INTO offers (offerId, title, description, companyName, technology, level, employmentType, cityName, streetName, priceMin, priceMax, currency, longitude, latitude)
-            VALUES ('ace36259-eb62-4c1e-a0eb-75b7de29d012', 'React Developer', 'test', 'Madkom', 'javascript', 'junior', 'b2b', 'Gdynia', 'Al. Zwycięstwa', '2000', '4000', 'PLN', '90.1234', '120.2234'),
-            ('ace36259-eb62-4c1e-a0eb-75b7de29d013', 'React Developer', 'test', 'Madkom', 'javascript', 'junior', 'b2b', 'Gdynia', 'Al. Zwycięstwa', '2000', '4000', 'PLN', '90.1234', '120.2234'),
-            ('ace36259-eb62-4c1e-a0eb-75b7de29d014', 'React Developer', 'test', 'Madkom', 'javascript', 'junior', 'b2b', 'Gdynia', 'Al. Zwycięstwa', '2000', '4000', 'PLN', '90.1234', '120.2234')
-        `
+
 @Entity('offers')
 export class OfferEntity extends AbstractEntity {
   @PrimaryColumn()
-  offerId: string;
+  offer_id: string;
 
   @Column()
   title: string;
@@ -20,7 +16,7 @@ export class OfferEntity extends AbstractEntity {
   description: string;
 
   @Column()
-  companyName: string;
+  company_name: string;
 
   @Column()
   technology: Technology;
@@ -29,19 +25,19 @@ export class OfferEntity extends AbstractEntity {
   level: Level;
 
   @Column()
-  employmentType: EmploymentType;
+  employment_type: EmploymentType;
 
   @Column()
-  cityName: string;
+  city_name: string;
 
   @Column()
-  streetName: string;
+  street_name: string;
 
   @Column()
-  priceMin: number;
+  price_min: number;
 
   @Column()
-  priceMax: number;
+  price_max: number;
 
   @Column()
   currency: Currency;
@@ -53,8 +49,8 @@ export class OfferEntity extends AbstractEntity {
   latitude: number;
 
   @Column('text', { array: true })
-  mustHave: string[];
+  must_have: string[];
 
   @Column('text', { array: true })
-  niceToHave: string[];
+  nice_to_have: string[];
 }

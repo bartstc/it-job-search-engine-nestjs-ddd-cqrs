@@ -7,13 +7,13 @@ import { CtxType } from '../domain/types';
 @Entity('roles')
 export class RoleEntity extends AbstractEntity {
   @PrimaryColumn()
-  roleId: string;
+  role_id: string;
 
   @Column()
   name: string;
 
   @Column()
-  contextType: CtxType;
+  context_type: CtxType;
 
   @Column('text', { array: true })
   permissions: string[];

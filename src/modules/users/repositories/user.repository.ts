@@ -20,7 +20,7 @@ export class UserRepository extends Repository<UserEntity> implements UserRepo {
   }
 
   async getUserByUserId(userId: string) {
-    const user = await this.findOne({ userId });
+    const user = await this.findOne({ user_id: userId });
     if (!user) throw new Error('User not found');
 
     return UserMap.toDomain(user);

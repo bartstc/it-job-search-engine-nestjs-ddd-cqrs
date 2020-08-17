@@ -32,7 +32,7 @@ export class UserMap implements Mapper<User> {
       hashed: true,
     });
     const contextTypeOrError = ContextType.create({
-      value: entity.contextType,
+      value: entity.context_type,
     });
 
     const userOrError = User.create(
@@ -41,11 +41,11 @@ export class UserMap implements Mapper<User> {
         password: userPasswordOrError.getValue(),
         email: userEmailOrError.getValue(),
         contextType: contextTypeOrError.getValue(),
-        isDeleted: entity.isDeleted,
-        isEmailVerified: entity.isEmailVerified,
-        roleIds: entity.roleIds,
+        isDeleted: entity.is_deleted,
+        isEmailVerified: entity.is_email_verified,
+        roleIds: entity.role_ids,
       },
-      new UniqueEntityID(entity.userId),
+      new UniqueEntityID(entity.user_id),
     );
 
     !userOrError.isSuccess ? console.log(userOrError.error) : '';
@@ -64,14 +64,14 @@ export class UserMap implements Mapper<User> {
     }
 
     return {
-      userId: user.userId.id.toString(),
+      user_id: user.userId.id.toString(),
       email: user.email.value,
       username: user.username.value,
-      contextType: user.contextType.value,
-      isEmailVerified: user.isEmailVerified,
+      context_type: user.contextType.value,
+      is_email_verified: user.isEmailVerified,
       password: password,
-      roleIds: user.roleIds,
-      isDeleted: user.isDeleted,
+      role_ids: user.roleIds,
+      is_deleted: user.isDeleted,
     };
   }
 }

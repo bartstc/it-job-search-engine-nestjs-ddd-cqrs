@@ -51,20 +51,20 @@ export class OfferMap implements Mapper<Offer> {
       value: entity.description,
     });
     const priceOrError = Price.create({
-      priceMin: entity.priceMin,
-      priceMax: entity.priceMax,
+      priceMin: entity.price_min,
+      priceMax: entity.price_max,
       currency: entity.currency,
     });
-    const mustHaveOrError = Skills.create({ value: entity.mustHave });
-    const niceToHaveOrError = Skills.create({ value: entity.niceToHave });
+    const mustHaveOrError = Skills.create({ value: entity.must_have });
+    const niceToHaveOrError = Skills.create({ value: entity.nice_to_have });
     const locationOrError = Location.create({
-      latitude: entity.latitude,
-      longitude: entity.longitude,
+      latitude: entity.latitude * 1,
+      longitude: entity.longitude * 1,
     });
 
     const addressOrError = Address.create({
-      cityName: entity.cityName,
-      streetName: entity.streetName,
+      cityName: entity.city_name,
+      streetName: entity.street_name,
       location: locationOrError.getValue(),
     });
 
@@ -76,13 +76,13 @@ export class OfferMap implements Mapper<Offer> {
         niceToHave: niceToHaveOrError.getValue(),
         price: priceOrError.getValue(),
         address: addressOrError.getValue(),
-        employmentType: entity.employmentType,
+        employmentType: entity.employment_type,
         technology: entity.technology,
         level: entity.level,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
       },
-      new UniqueEntityID(entity.offerId),
+      new UniqueEntityID(entity.offer_id),
     );
 
     !offerOrError.isSuccess ? console.log(offerOrError.error) : '';

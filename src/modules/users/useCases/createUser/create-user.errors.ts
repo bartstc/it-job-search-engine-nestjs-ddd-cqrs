@@ -1,6 +1,5 @@
 import { Result, UseCaseError } from 'shared/core';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CreateUserErrors {
   export class EmailAlreadyExistsError extends Result<UseCaseError> {
     constructor(email: string) {
