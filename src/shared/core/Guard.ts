@@ -29,12 +29,24 @@ export class Guard {
         };
   }
 
-  public static againstAtLeast(
-    numChars: number,
-    text: string,
-    argumentPath: string,
-  ): IGuardResult {
-    return text.length >= numChars
+  public static allAtLeast(numChars: number, args: IGuardArgument[]) {
+    for (const arg of args) {
+      const result = this.againstAtLeast({ numChars, ...arg });
+      if (!result.succeeded) return result;
+    }
+    return getSuccessResult(args[0].argumentPath);
+  }
+
+  public static againstAtLeast({
+    argumentPath,
+    numChars,
+    argument,
+  }: {
+    numChars: number;
+    argument: string;
+    argumentPath: string;
+  }): IGuardResult {
+    return argument.length >= numChars
       ? getSuccessResult(argumentPath)
       : {
           succeeded: false,
@@ -42,12 +54,24 @@ export class Guard {
         };
   }
 
-  public static againstAtMost(
-    numChars: number,
-    text: string,
-    argumentPath: string,
-  ): IGuardResult {
-    return text.length <= numChars
+  public static allAtMost(numChars: number, args: IGuardArgument[]) {
+    for (const arg of args) {
+      const result = this.againstAtMost({ numChars, ...arg });
+      if (!result.succeeded) return result;
+    }
+    return getSuccessResult(args[0].argumentPath);
+  }
+
+  public static againstAtMost({
+    numChars,
+    argumentPath,
+    argument,
+  }: {
+    numChars: number;
+    argument: string;
+    argumentPath: string;
+  }): IGuardResult {
+    return argument.length <= numChars
       ? getSuccessResult(argumentPath)
       : {
           succeeded: false,
@@ -79,15 +103,18 @@ export class Guard {
       );
       if (!result.succeeded) return result;
     }
-
     return getSuccessResult(args[0].argumentPath);
   }
 
-  public static isOneOf(
-    value: any,
-    validValues: any[],
-    argumentPath: string,
-  ): IGuardResult {
+  public static isOneOf({
+    value,
+    validValues,
+    argumentPath,
+  }: {
+    value: any;
+    validValues: any[];
+    argumentPath: string;
+  }): IGuardResult {
     let isValid = false;
     for (const validValue of validValues) {
       if (value === validValue) {
@@ -105,12 +132,17 @@ export class Guard {
     }
   }
 
-  public static inRange(
-    num: number,
-    min: number,
-    max: number,
-    argumentPath: string,
-  ): IGuardResult {
+  public static inRange({
+    argumentPath,
+    max,
+    min,
+    num,
+  }: {
+    num: number;
+    min: number;
+    max: number;
+    argumentPath: string;
+  }): IGuardResult {
     const isInRange = num >= min && num <= max;
     if (!isInRange) {
       return {
@@ -122,25 +154,30 @@ export class Guard {
     }
   }
 
-  public static allInRange(
-    numbers: number[],
-    min: number,
-    max: number,
-    argumentPath: string,
-  ): IGuardResult {
+  public static allInRange({
+    min,
+    max,
+    args,
+  }: {
+    min: number;
+    max: number;
+    args: IGuardArgument[];
+  }): IGuardResult {
     let failingResult: IGuardResult | null = null;
-    for (const num of numbers) {
-      const numIsInRangeResult = this.inRange(num, min, max, argumentPath);
+    for (const { argument, argumentPath } of args) {
+      const numIsInRangeResult = this.inRange({
+        num: argument,
+        min,
+        max,
+        argumentPath,
+      });
       if (!numIsInRangeResult.succeeded) failingResult = numIsInRangeResult;
     }
 
     if (failingResult) {
-      return {
-        succeeded: false,
-        message: `${argumentPath}.shouldBeWithinRange${min}to${max}`,
-      };
+      return failingResult;
     } else {
-      return getSuccessResult(argumentPath);
+      return getSuccessResult(args[0].argumentPath);
     }
   }
 
@@ -174,8 +211,15 @@ export class Guard {
         message: `${argumentPath}.allItemsShouldBeTypeOfString`,
       };
     }
-
     return getSuccessResult(argumentPath);
+  }
+
+  public static isStringBulk(args: GuardArgumentCollection): IGuardResult {
+    for (const arg of args) {
+      const result = this.isString(arg.argument, arg.argumentPath);
+      if (!result.succeeded) return result;
+    }
+    return getSuccessResult(args[0].argumentPath);
   }
 
   public static isString(value: any, argumentPath: string): IGuardResult {
@@ -189,11 +233,18 @@ export class Guard {
     };
   }
 
+  public static allIsNumber(args: GuardArgumentCollection): IGuardResult {
+    for (const arg of args) {
+      const result = this.isNumber(arg.argument, arg.argumentPath);
+      if (!result.succeeded) return result;
+    }
+    return getSuccessResult(args[0].argumentPath);
+  }
+
   public static isNumber(value: any, argumentPath: string): IGuardResult {
     if (typeof value === 'number') {
       return getSuccessResult(argumentPath);
     }
-
     return {
       succeeded: false,
       message: `${argumentPath}.shouldBeNumber`,
