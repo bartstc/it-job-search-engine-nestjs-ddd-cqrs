@@ -17,7 +17,7 @@ export class GetRolesController extends BaseController {
   logger = new Logger('GetRolesController');
 
   @Get('roles/:contextType')
-  async createRole(
+  async getRoles(
     @Param('contextType') contextType: CtxType,
     @Res() res: Response,
   ) {

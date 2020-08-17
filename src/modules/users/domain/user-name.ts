@@ -26,20 +26,20 @@ export class UserName extends ValueObject<UserNameProps> {
       return Result.fail(usernameResult);
     }
 
-    const minLengthResult = Guard.againstAtLeast(
-      this.minLength,
-      props.value,
-      'userName',
-    );
+    const minLengthResult = Guard.againstAtLeast({
+      numChars: this.minLength,
+      argument: props.value,
+      argumentPath: 'userName',
+    });
     if (!minLengthResult.succeeded) {
       return Result.fail(minLengthResult);
     }
 
-    const maxLengthResult = Guard.againstAtMost(
-      this.maxLength,
-      props.value,
-      'userName',
-    );
+    const maxLengthResult = Guard.againstAtMost({
+      numChars: this.maxLength,
+      argument: props.value,
+      argumentPath: 'userName',
+    });
     if (!maxLengthResult.succeeded) {
       return Result.fail(minLengthResult);
     }

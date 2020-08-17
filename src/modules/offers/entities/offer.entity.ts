@@ -4,7 +4,7 @@ import { AbstractEntity } from 'shared/core';
 
 import { Currency, EmploymentType, Level, Technology } from '../domain/types';
 
-@Entity('offer')
+@Entity('offers')
 export class OfferEntity extends AbstractEntity {
   @PrimaryColumn()
   offerId: string;

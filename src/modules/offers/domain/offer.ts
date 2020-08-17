@@ -92,7 +92,7 @@ export class Offer extends Entity<OfferProps> {
     );
   }
 
-  private static create(props: OfferProps, id?: UniqueEntityID): Result<Offer> {
+  public static create(props: OfferProps, id?: UniqueEntityID): Result<Offer> {
     const args: IGuardArgument[] = [
       { argument: props.title, argumentPath: 'title' },
       { argument: props.description, argumentPath: 'description' },

@@ -23,20 +23,20 @@ export class RoleName extends ValueObject<RoleNameProps> {
       return Result.fail(roleNameResult);
     }
 
-    const minLengthResult = Guard.againstAtLeast(
-      this.minLength,
-      props.value,
-      'name',
-    );
+    const minLengthResult = Guard.againstAtLeast({
+      numChars: this.minLength,
+      argument: props.value,
+      argumentPath: 'name',
+    });
     if (!minLengthResult.succeeded) {
       return Result.fail(minLengthResult);
     }
 
-    const maxLengthResult = Guard.againstAtMost(
-      this.maxLength,
-      props.value,
-      'name',
-    );
+    const maxLengthResult = Guard.againstAtMost({
+      numChars: this.maxLength,
+      argument: props.value,
+      argumentPath: 'name',
+    });
     if (!maxLengthResult.succeeded) {
       return Result.fail(minLengthResult);
     }
