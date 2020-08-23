@@ -3,7 +3,7 @@ import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 
 import { AppError, BaseController } from 'shared/core';
 
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../services';
 import { CreateUserDto } from './create-user.dto';
 import { CreateUserErrors } from './create-user.errors';
 import { CreateUserResponse } from './create-user.use-case';

@@ -6,7 +6,7 @@ import { Location } from './location';
 interface AddressProps {
   cityName: string;
   streetName: string;
-  location: Location;
+  location: Result<Location>;
 }
 
 export class Address extends ValueObject<AddressProps> {
@@ -30,6 +30,10 @@ export class Address extends ValueObject<AddressProps> {
   }
 
   public static create(props: AddressProps): Result<Address> {
+    if (!props.location.isSuccess) {
+      return Result.fail(props.location.errorValue());
+    }
+
     const nullGuard = Guard.againstNullOrUndefinedBulk([
       { argument: props.cityName, argumentPath: 'cityName' },
       { argument: props.streetName, argumentPath: 'streetName' },
