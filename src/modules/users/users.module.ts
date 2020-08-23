@@ -8,7 +8,7 @@ import { RoleRepository, UserRepository } from './repositories';
 import { CommandHandlers } from './commands/handlers';
 import { QueryHandlers } from './queries/handlers';
 
-import { JwtStrategy, RolesService, UsersService } from './services';
+import { JwtStrategy, RoleService, UserService } from './services';
 
 import { CreateUserController, CreateUserUseCase } from './useCases/createUser';
 import { LoginUserController, LoginUserUseCase } from './useCases/loginUser';
@@ -44,8 +44,8 @@ import { GetRolesController, GetRolesUseCase } from './useCases/getRoles';
     ...CommandHandlers,
     ...QueryHandlers,
     JwtStrategy,
-    RolesService,
-    UsersService,
+    RoleService,
+    UserService,
     CreateUserUseCase,
     LoginUserUseCase,
     DeleteUserUseCase,

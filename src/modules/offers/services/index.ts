@@ -1,1 +1,1 @@
-export { OffersService } from './offers.service';
+export { OfferService } from './offer.service';

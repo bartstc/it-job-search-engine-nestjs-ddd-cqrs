@@ -3,13 +3,13 @@ import { Controller, Delete, Logger, Param, Res } from '@nestjs/common';
 
 import { BaseController } from 'shared/core';
 
-import { UsersService } from '../../services';
+import { UserService } from '../../services';
 import { DeleteUserErrors } from './delete-user.errors';
 import { DeleteUserResponse } from './delete-user.use-case';
 
 @Controller()
 export class DeleteUserController extends BaseController {
-  constructor(private readonly usersService: UsersService) {
+  constructor(private readonly usersService: UserService) {
     super();
   }
 

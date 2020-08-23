@@ -30,6 +30,7 @@ services:
       PG_DATA: /var/lib/postgresql/data
     ports:
       - ${DB_PORT}:5432
+#    hostname: postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
 networks:

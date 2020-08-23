@@ -11,7 +11,7 @@ import { DeleteUserDto } from '../useCases/deleteUser';
 import { LoginUserDto } from '../useCases/loginUser';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,

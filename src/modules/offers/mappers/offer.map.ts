@@ -20,6 +20,7 @@ export class OfferMap implements Mapper<Offer> {
 
   public static toDto(offer: Offer): OfferDto {
     return {
+      offerId: offer.offerId.id.toString(),
       title: offer.title.value,
       description: offer.description.value,
       mustHave: offer.mustHave.value,
@@ -87,5 +88,25 @@ export class OfferMap implements Mapper<Offer> {
 
     !offerOrError.isSuccess ? console.log(offerOrError.error) : '';
     return offerOrError.getValue();
+  }
+
+  public static toPersistence(offer: Offer): Partial<OfferEntity> {
+    return {
+      offer_id: offer.offerId.id.toString(),
+      title: offer.title.value,
+      description: offer.description.value,
+      nice_to_have: offer.niceToHave.value,
+      must_have: offer.mustHave.value,
+      employment_type: offer.employmentType,
+      technology: offer.technology,
+      level: offer.level,
+      street_name: offer.address.streetName,
+      city_name: offer.address.cityName,
+      longitude: offer.address.location.longitude,
+      latitude: offer.address.location.latitude,
+      price_min: offer.price.priceMin,
+      price_max: offer.price.priceMax,
+      currency: offer.price.currency,
+    };
   }
 }

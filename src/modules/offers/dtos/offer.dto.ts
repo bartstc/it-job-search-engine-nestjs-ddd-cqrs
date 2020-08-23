@@ -1,6 +1,7 @@
 import { Currency, EmploymentType, Level, Technology } from '../domain/types';
 
 export class OfferDto {
+  offerId: string;
   title: string;
   description: string;
   niceToHave: string[];

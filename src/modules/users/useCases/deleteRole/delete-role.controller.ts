@@ -3,13 +3,13 @@ import { Controller, Delete, Logger, Param, Res } from '@nestjs/common';
 
 import { BaseController } from 'shared/core';
 
-import { RolesService } from '../../services';
+import { RoleService } from '../../services';
 import { DeleteRoleErrors } from './delete-role.errors';
 import { DeleteRoleResponse } from './delete-role.use-case';
 
 @Controller()
 export class DeleteRoleController extends BaseController {
-  constructor(private readonly rolesService: RolesService) {
+  constructor(private readonly rolesService: RoleService) {
     super();
   }
 

@@ -3,13 +3,13 @@ import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 
 import { AppError, BaseController } from 'shared/core';
 
-import { RolesService } from '../../services';
+import { RoleService } from '../../services';
 import { CreateRoleDto } from './create-role.dto';
 import { CreateRoleResponse } from './create-role.use-case';
 
 @Controller()
 export class CreateRoleController extends BaseController {
-  constructor(private readonly rolesService: RolesService) {
+  constructor(private readonly rolesService: RoleService) {
     super();
   }
 

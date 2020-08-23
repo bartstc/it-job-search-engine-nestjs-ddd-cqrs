@@ -1,12 +1,14 @@
 import { Controller, Get, Logger, Res } from '@nestjs/common';
-import { BaseController } from '../../../../shared/core';
 import { Response } from 'express';
-import { OffersService } from '../../services/offers.service';
+
+import { BaseController } from 'shared/core';
+
+import { OfferService } from '../../services';
 import { GetOffersResponse } from './get-offers.use-case';
 
 @Controller()
 export class GetOffersController extends BaseController {
-  constructor(private readonly offersService: OffersService) {
+  constructor(private readonly offersService: OfferService) {
     super();
   }
 

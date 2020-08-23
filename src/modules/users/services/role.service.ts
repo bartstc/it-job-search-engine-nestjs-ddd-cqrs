@@ -8,7 +8,7 @@ import { GetRolesQuery } from '../queries/impl';
 import { CreateRoleCommand, DeleteRoleCommand } from '../commands/impl';
 
 @Injectable()
-export class RolesService {
+export class RoleService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,

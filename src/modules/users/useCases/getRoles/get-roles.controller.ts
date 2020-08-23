@@ -3,14 +3,14 @@ import { Controller, Get, Logger, Param, Res } from '@nestjs/common';
 
 import { BaseController } from 'shared/core';
 
-import { RolesService } from '../../services';
+import { RoleService } from '../../services';
 import { CtxType } from '../../domain/types';
 import { GetRolesErrors } from './get-roles.errors';
 import { GetRolesResponse } from './get-roles.use-case';
 
 @Controller()
 export class GetRolesController extends BaseController {
-  constructor(private readonly rolesService: RolesService) {
+  constructor(private readonly rolesService: RoleService) {
     super();
   }
 

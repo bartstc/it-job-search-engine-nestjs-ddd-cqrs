@@ -3,14 +3,14 @@ import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 
 import { AppError, BaseController } from 'shared/core';
 
-import { UsersService } from '../../services/users.service';
+import { UserService } from '../../services/user.service';
 import { CreateUserDto } from './create-user.dto';
 import { CreateUserErrors } from './create-user.errors';
 import { CreateUserResponse } from './create-user.use-case';
 
 @Controller()
 export class CreateUserController extends BaseController {
-  constructor(private readonly usersService: UsersService) {
+  constructor(private readonly usersService: UserService) {
     super();
   }
 
