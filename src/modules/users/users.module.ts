@@ -4,19 +4,37 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
-import { RoleRepository, UserRepository } from './repositories';
-import { CommandHandlers } from './commands/handlers';
-import { QueryHandlers } from './queries/handlers';
+import { CommandHandlers } from './application/commands/handlers';
+import { QueryHandlers } from './application/queries/handlers';
 
-import { JwtStrategy, RoleService, UserService } from './services';
+import { JwtStrategy, RoleService, UserService } from './application/services';
+import { RoleRepository, UserRepository } from './adapter';
 
-import { CreateUserController, CreateUserUseCase } from './useCases/createUser';
-import { LoginUserController, LoginUserUseCase } from './useCases/loginUser';
-import { DeleteUserController, DeleteUserUseCase } from './useCases/deleteUser';
+import {
+  CreateUserController,
+  CreateUserUseCase,
+} from './application/useCases/createUser';
+import {
+  LoginUserController,
+  LoginUserUseCase,
+} from './application/useCases/loginUser';
+import {
+  DeleteUserController,
+  DeleteUserUseCase,
+} from './application/useCases/deleteUser';
 
-import { CreateRoleController, CreateRoleUseCase } from './useCases/createRole';
-import { DeleteRoleController, DeleteRoleUseCase } from './useCases/deleteRole';
-import { GetRolesController, GetRolesUseCase } from './useCases/getRoles';
+import {
+  CreateRoleController,
+  CreateRoleUseCase,
+} from './application/useCases/createRole';
+import {
+  DeleteRoleController,
+  DeleteRoleUseCase,
+} from './application/useCases/deleteRole';
+import {
+  GetRolesController,
+  GetRolesUseCase,
+} from './application/useCases/getRoles';
 
 @Module({
   imports: [
