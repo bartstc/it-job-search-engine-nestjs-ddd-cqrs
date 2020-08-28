@@ -1,15 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import {
-  AppError,
-  Either,
-  left,
-  Result,
-  right,
-  UseCase,
-  ValidationTransformer,
-} from 'shared/core';
+import { AppError, Either, left, Result, right, UseCase } from 'shared/core';
 
 import {
   Description,
@@ -22,7 +14,6 @@ import {
 } from '../../../domain';
 import { OfferRepository } from '../../../adapter';
 import { CreateOfferDto } from './create-offer.dto';
-import { createOfferSchema } from './create-offer.schema';
 
 export type CreateOfferResponse = Either<
   AppError.ValidationError | AppError.UnexpectedError,
@@ -57,24 +48,6 @@ export class CreateOfferUseCase
         streetName: dto.streetName,
         cityName: dto.cityName,
       });
-
-      const validationResult = await ValidationTransformer.extractExceptions({
-        dto,
-        schema: createOfferSchema,
-        results: [
-          titleOrError,
-          descriptionOrError,
-          mustHaveOrError,
-          niceToHaveOrError,
-          priceOrError,
-          locationOrError,
-          addressOrError,
-        ],
-      });
-
-      if (!validationResult.isSuccess) {
-        return left(new AppError.ValidationError(validationResult.error));
-      }
 
       const offerOrError = Offer.create({
         title: titleOrError.getValue(),

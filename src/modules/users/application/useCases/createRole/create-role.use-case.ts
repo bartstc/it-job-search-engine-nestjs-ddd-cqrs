@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Either, left, Result, right } from 'shared/core/Result';
-import { AppError, UseCase, ValidationTransformer } from 'shared/core';
+import { AppError, UseCase } from 'shared/core';
 
-import { createRoleSchema } from './create-role.schema';
 import { RoleName } from '../../../domain/role-name';
 import { CreateRoleDto } from './create-role.dto';
 import { ContextType, Role } from '../../../domain';
@@ -28,16 +27,6 @@ export class CreateRoleUseCase
     const contextTypeOrError = ContextType.create({
       value: dto.contextType,
     });
-
-    const validationResult = await ValidationTransformer.extractExceptions({
-      dto,
-      schema: createRoleSchema,
-      results: [roleNameOrError, contextTypeOrError],
-    });
-
-    if (!validationResult.isSuccess) {
-      return left(new AppError.ValidationError(validationResult.error));
-    }
 
     const name = roleNameOrError.getValue();
     const contextType = contextTypeOrError.getValue();

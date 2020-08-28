@@ -1,21 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 
-import {
-  AppError,
-  Either,
-  left,
-  Result,
-  right,
-  UseCase,
-  ValidationTransformer,
-} from 'shared/core';
+import { AppError, Either, left, Result, right, UseCase } from 'shared/core';
 
 import { JwtPayload } from '../../../domain/types';
 import { User, UserName, UserPassword } from '../../../domain';
 import { LoginUserErrors } from './login-user.errors';
 import { LoginUserDtoResponse, LoginUserDto } from './login-user.dto';
-import { loginUserSchema } from './login-user.schema';
 import { UserRepository } from '../../../adapter';
 
 export type LoginUserResponse = Either<
@@ -42,16 +33,6 @@ export class LoginUserUseCase
     try {
       const usernameOrError = UserName.create({ value: dto.username });
       const passwordOrError = UserPassword.create({ value: dto.password });
-
-      const validationResult = await ValidationTransformer.extractExceptions({
-        dto,
-        schema: loginUserSchema,
-        results: [usernameOrError, passwordOrError],
-      });
-
-      if (!validationResult.isSuccess) {
-        return left(new AppError.ValidationError(validationResult.error));
-      }
 
       username = usernameOrError.getValue();
       password = passwordOrError.getValue();

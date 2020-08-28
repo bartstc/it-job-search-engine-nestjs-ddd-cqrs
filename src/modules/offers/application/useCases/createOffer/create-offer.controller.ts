@@ -1,11 +1,12 @@
 import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 
-import { AppError, BaseController } from 'shared/core';
+import { BaseController, ValidationTransformer } from 'shared/core';
 
 import { OfferService } from '../../services';
 import { CreateOfferDto } from './create-offer.dto';
 import { CreateOfferResponse } from './create-offer.use-case';
+import { createOfferSchema } from './create-offer.schema';
 
 @Controller()
 export class CreateOfferController extends BaseController {
@@ -21,6 +22,15 @@ export class CreateOfferController extends BaseController {
     @Res() res: Response,
   ) {
     try {
+      const formErrors = await ValidationTransformer.validateSchema(
+        createOfferDto,
+        createOfferSchema,
+      );
+
+      if (formErrors.isLeft()) {
+        return this.clientError(res, formErrors.value.errorValue());
+      }
+
       const result: CreateOfferResponse = await this.offerService.createOffer(
         createOfferDto,
       );
@@ -29,12 +39,7 @@ export class CreateOfferController extends BaseController {
         const error = result.value;
         this.logger.error(error.errorValue());
 
-        switch (error.constructor) {
-          case AppError.ValidationError:
-            return this.clientError(res, error.errorValue());
-          default:
-            return this.fail(res, error.errorValue());
-        }
+        return this.fail(res, error.errorValue());
       }
 
       this.logger.verbose('Offer successfully created');

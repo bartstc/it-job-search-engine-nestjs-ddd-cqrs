@@ -10,10 +10,26 @@ import {
 export const createOfferSchema = yup
   .object<CreateOfferDto>()
   .shape<CreateOfferDto>({
-    title: yup.string().required(),
-    description: yup.string().required(),
-    cityName: yup.string().required(),
-    streetName: yup.string().required(),
+    title: yup
+      .string()
+      .required()
+      .min(2)
+      .max(85),
+    description: yup
+      .string()
+      .required()
+      .min(2)
+      .max(10000),
+    cityName: yup
+      .string()
+      .required()
+      .min(2)
+      .max(50),
+    streetName: yup
+      .string()
+      .required()
+      .min(2)
+      .max(50),
     level: yup
       .string()
       .required()
@@ -26,14 +42,30 @@ export const createOfferSchema = yup
       .string()
       .required()
       .oneOf(Object.values(EmploymentType)),
-    latitude: yup.number().required(),
-    longitude: yup.number().required(),
+    latitude: yup
+      .number()
+      .required()
+      .min(-90)
+      .max(90),
+    longitude: yup
+      .number()
+      .required()
+      .min(-180)
+      .max(180),
     currency: yup
       .string()
       .required()
       .oneOf(Object.values(Currency)),
-    priceMin: yup.number().required(),
-    priceMax: yup.number().required(),
+    priceMin: yup
+      .number()
+      .required()
+      .min(0)
+      .max(99999),
+    priceMax: yup
+      .number()
+      .required()
+      .min(0)
+      .max(99999),
     niceToHave: yup.array(),
     mustHave: yup.array(),
   });

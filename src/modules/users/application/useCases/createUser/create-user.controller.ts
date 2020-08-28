@@ -1,12 +1,13 @@
 import { Response } from 'express';
 import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 
-import { AppError, BaseController } from 'shared/core';
+import { AppError, BaseController, ValidationTransformer } from 'shared/core';
 
 import { UserService } from '../../services';
 import { CreateUserDto } from './create-user.dto';
 import { CreateUserErrors } from './create-user.errors';
 import { CreateUserResponse } from './create-user.use-case';
+import { createUserSchema } from './create-user.schema';
 
 @Controller()
 export class CreateUserController extends BaseController {
@@ -19,6 +20,15 @@ export class CreateUserController extends BaseController {
   @Post('users/signup')
   async createUser(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     try {
+      const formErrors = await ValidationTransformer.validateSchema(
+        createUserDto,
+        createUserSchema,
+      );
+
+      if (formErrors.isLeft()) {
+        return this.clientError(res, formErrors.value.errorValue());
+      }
+
       const result: CreateUserResponse = await this.usersService.createUser(
         createUserDto,
       );
@@ -28,8 +38,6 @@ export class CreateUserController extends BaseController {
         this.logger.error(error.errorValue());
 
         switch (error.constructor) {
-          case AppError.ValidationError:
-            return this.clientError(res, error.errorValue());
           case CreateUserErrors.UsernameTakenError:
           case CreateUserErrors.EmailAlreadyExistsError:
             return this.conflict(res, error.errorValue());

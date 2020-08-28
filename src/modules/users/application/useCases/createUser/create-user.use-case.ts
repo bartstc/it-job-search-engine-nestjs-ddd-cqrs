@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Either, left, Result, right } from 'shared/core/Result';
-import { AppError, UseCase, ValidationTransformer } from 'shared/core';
+import { AppError, UseCase } from 'shared/core';
 
 import {
   ContextType,
@@ -14,7 +14,6 @@ import {
 import { UserRepository } from '../../../adapter';
 import { CreateUserErrors } from './create-user.errors';
 import { CreateUserDto } from './create-user.dto';
-import { createUserSchema } from './create-user.schema';
 
 export type CreateUserResponse = Either<
   | CreateUserErrors.EmailAlreadyExistsError
@@ -39,21 +38,6 @@ export class CreateUserUseCase
     const contextTypeOrError = ContextType.create({
       value: dto.contextType,
     });
-
-    const validationResult = await ValidationTransformer.extractExceptions({
-      dto,
-      schema: createUserSchema,
-      results: [
-        emailOrError,
-        passwordOrError,
-        usernameOrError,
-        contextTypeOrError,
-      ],
-    });
-
-    if (!validationResult.isSuccess) {
-      return left(new AppError.ValidationError(validationResult.error));
-    }
 
     const email = emailOrError.getValue();
     const password = passwordOrError.getValue();

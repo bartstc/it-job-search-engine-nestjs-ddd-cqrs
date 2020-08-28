@@ -1,11 +1,12 @@
 import { Response } from 'express';
 import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 
-import { AppError, BaseController } from 'shared/core';
+import { BaseController, ValidationTransformer } from 'shared/core';
 
 import { RoleService } from '../../services';
 import { CreateRoleDto } from './create-role.dto';
 import { CreateRoleResponse } from './create-role.use-case';
+import { createRoleSchema } from './create-role.schema';
 
 @Controller()
 export class CreateRoleController extends BaseController {
@@ -18,6 +19,15 @@ export class CreateRoleController extends BaseController {
   @Post('roles')
   async createRole(@Body() createRoleDto: CreateRoleDto, @Res() res: Response) {
     try {
+      const formErrors = await ValidationTransformer.validateSchema(
+        createRoleDto,
+        createRoleSchema,
+      );
+
+      if (formErrors.isLeft()) {
+        return this.clientError(res, formErrors.value.errorValue());
+      }
+
       const result: CreateRoleResponse = await this.rolesService.createRole(
         createRoleDto,
       );
@@ -26,12 +36,7 @@ export class CreateRoleController extends BaseController {
         const error = result.value;
         this.logger.error(error.errorValue());
 
-        switch (error.constructor) {
-          case AppError.ValidationError:
-            return this.clientError(res, error.errorValue());
-          default:
-            return this.fail(res, error.errorValue());
-        }
+        return this.fail(res, error.errorValue());
       }
 
       this.logger.verbose('Role successfully created');
