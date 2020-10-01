@@ -1,4 +1,6 @@
-FROM node:12.13-alpine As development
+# https://blog.logrocket.com/containerized-development-nestjs-docker/
+
+FROM node:latest As development
 
 WORKDIR /usr/src/app
 
@@ -10,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:12.13-alpine as production
+FROM node:latest as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}

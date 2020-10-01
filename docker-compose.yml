@@ -1,3 +1,6 @@
+# debug postgres connection: https://dev.to/renanbr/controlling-service-readiness-in-docker-compose-4dfm
+# https://docs.docker.com/compose/startup-order/
+
 version: '3.7'
 
 services:
@@ -11,28 +14,39 @@ services:
       - /usr/src/app/node_modules
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-    command: npm run start:dev
-    env_file:
-      - .env
+#    env_file:
+#      - .env
+    environment:
+      SERVER_PORT: 4000
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: it-job-search-engine
+      SECRET: thisIsASecretKey
+      MIGRATIONS_DIR: src/migrations
     networks:
       - webnet
     depends_on:
-      - postgres
-  postgres:
-    container_name: postgres
+      - db
+    command: npm run start:dev
+  db: # hostname inside network
+    container_name: it-job-search-engine-db
     image: postgres:12
+    restart: always
     networks:
       - webnet
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_DATABASE_NAME}
-      PG_DATA: /var/lib/postgresql/data
-    ports:
-      - ${DB_PORT}:5432
-#    hostname: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: it-job-search-engine
+#    expose:
+#      - 5432
+#    ports:
+#      - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
+
 networks:
   webnet:
 volumes:
